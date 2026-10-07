@@ -139,13 +139,15 @@ def reactions(ret: pd.DataFrame, ev: pd.DataFrame, v: Variant) -> tuple[pd.DataF
             starts = starts[good]
             if len(starts) < MIN_WINDOWS:
                 continue
-            normals = np.abs(sum(ar(starts + j) for j in range(L)))
+            window_cars = sum(ar(starts + j) for j in range(L))
+            normals = np.abs(window_cars)
             normal = normals.mean()
             car = ar(pos).sum()
             rows.append({"stock": stock, "event_id": e.Index, "group": e.group, "event_type": e.event_type,
                          "ref_month": e.ref_month, "release_date": e.release_date, "event_day": e.event_day,
                          "main_sample": e.main_sample, "rule_based_date": e.rule_based_date,
                          "car": car, "normal_day": normal, "ratio": abs(car) / normal,
+                         "sd_window": window_cars.std(ddof=1),
                          "has_extreme_day": bool(ret["extreme_day"].iloc[pos].any())})
             placebo[(stock, e.Index)] = normals / normal
     return pd.DataFrame(rows), placebo
@@ -275,6 +277,50 @@ def v25(rx: pd.DataFrame, v: Variant, rng) -> list[dict]:
                     "effect_per_sd": slope * sd, "max_effect_per_sd": max(abs(lo), abs(hi)) * sd,
                     "first_quarter": d["quarter"].min(), "last_quarter": d["quarter"].max()})
     return out
+
+
+# ---------------------------------------------------------------- exploratory E-1, E-2
+
+def exploratory(use: pd.DataFrame) -> pd.DataFrame:
+    """E-1 (reaction vs lead time) and E-2 (top 20% surprises, monthly release). QUESTION.md rule 7."""
+    rng = np.random.default_rng(SEED + 2)
+    rows = []
+    q = pd.read_csv(PROC / "quarterly.csv", parse_dates=["date_first_earnings"])
+    for firm, group, stock in [("skhynix", "earnings_sk", "skhynix"), ("samsung", "earnings_samsung", "samsung")]:
+        e = use[(use["group"] == group) & (use["stock"] == stock) & use["main_sample"]]
+        d = q[q["firm"] == firm].dropna(subset=["lead_days_main"]).merge(e, left_on="date_first_earnings", right_on="release_date")
+        xv, yv = d["lead_days_main"].to_numpy(float), d["ratio"].to_numpy()
+        slope = np.polyfit(xv, yv, 1)[0]
+        null = np.array([np.polyfit(rng.permutation(xv), yv, 1)[0] for _ in range(REPS)])
+        boot = [np.polyfit(xv[i], yv[i], 1)[0] for i in (rng.integers(0, len(xv), len(xv)) for _ in range(REPS))
+                if np.ptp(xv[i]) > 0]
+        lo, hi = np.percentile(boot, [2.5, 97.5])
+        verdict = "right (negative slope)" if hi < 0 else ("wrong (positive slope)" if lo > 0 else "not conclusive")
+        rows.append({"spec": f"E-1 earnings reaction vs lead time, {STOCKS[stock]}", "n": len(xv),
+                     "estimate": slope, "ci_lo": lo, "ci_hi": hi, "p_raw": two_sided(null, slope, 0.0),
+                     "verdict": verdict, "note": f"lead {xv.min():.0f}-{xv.max():.0f} days, sd {xv.std(ddof=1):.1f}"})
+    # E-2: surprise of the monthly release = full month (ECOS, revised) - first 20 days (first release)
+    ecos = pd.read_csv(PROC / "ecos_semis_export_value_index.csv", index_col=0, parse_dates=True)["value"]
+    ecos_yoy = (ecos / ecos.shift(12) - 1) * 100
+    ecos_yoy.index = ecos_yoy.index.strftime("%Y-%m")
+    f20 = pd.read_csv(PROC / "kcs_first20_semis.csv").set_index("ref_month")["chip_export_yoy_pct"]
+    surprise = (ecos_yoy - f20).dropna()
+    for stock in STOCKS:
+        m = use[(use["group"] == "monthly") & (use["stock"] == stock) & use["main_sample"]].copy()
+        m["surprise"] = m["ref_month"].map(surprise)
+        m = m.dropna(subset=["surprise"])
+        m = m[m["surprise"] != 0]
+        m["signed"] = m["car"] * np.sign(m["surprise"]) / m["sd_window"]
+        cut = m["surprise"].abs().quantile(0.8)
+        top, rest = m[m["surprise"].abs() >= cut]["signed"].to_numpy(), m[m["surprise"].abs() < cut]["signed"].to_numpy()
+        t = gap_test(top, rest, rng)
+        rows.append({"spec": f"E-2 monthly, top 20% surprises vs others, {STOCKS[stock]}", "n": t["n"],
+                     "estimate": t["estimate"], "ci_lo": t["ci_lo"], "ci_hi": t["ci_hi"], "p_raw": t["p_raw"],
+                     "verdict": verdict_gap(t["estimate"], t["ci_lo"], t["ci_hi"]),
+                     "note": f"top 20%: mean signed {top.mean():.2f} sigma; others {rest.mean():.2f}; |surprise| cut {cut:.1f} pp"})
+    for stock in STOCKS:
+        rows.append({"spec": f"E-2 first-20-days, {STOCKS[stock]}", "n": 0, "verdict": "not computable (no free expectation)"})
+    return pd.DataFrame(rows)
 
 
 # ---------------------------------------------------------------- one full run
@@ -428,6 +474,8 @@ def main() -> None:
             out.to_csv(OUT / "v2_main.csv", index=False)
             figure_reactions(out).write_html(OUT / "v2_reactions.html", include_plotlyjs="cdn")
             figure_priced_in(use, out).write_html(OUT / "v2_5_priced_in.html", include_plotlyjs="cdn")
+            ex = exploratory(use)
+            ex.to_csv(OUT / "exploratory_e1_e2.csv", index=False)
     allres = pd.concat(allres, ignore_index=True)
     allres.to_csv(OUT / "v2_robustness.csv", index=False)
 
@@ -450,7 +498,9 @@ def main() -> None:
                    for s in relevant
                    if g.loc[s, "verdict"] != base.loc[s, "verdict"] or (base.loc[s, "p_holm"] < .05) != (g.loc[s, "p_holm"] < .05)]
         print(f"- {name}: " + ("no change" if not changed else "\n    " + "\n    ".join(changed)))
-    print("\nSaved: outputs/v2_main.csv, v2_robustness.csv, v2_reactions_by_event.csv, v2_reactions.html, v2_5_priced_in.html")
+    print("\n=== Exploratory E-1, E-2 (not in the Holm families)")
+    print(pd.read_csv(OUT / "exploratory_e1_e2.csv").round(3).to_string(index=False))
+    print("\nSaved: outputs/v2_main.csv, v2_robustness.csv, v2_reactions_by_event.csv, v2_reactions.html, v2_5_priced_in.html, exploratory_e1_e2.csv")
 
 
 if __name__ == "__main__":

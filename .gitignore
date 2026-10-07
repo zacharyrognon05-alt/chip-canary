@@ -25,3 +25,7 @@ data/raw/kcs_releases/
 
 # OpenDART raw API answers: re-download with src/fetch_earnings.py (needs DART_API_KEY)
 data/raw/dart/
+
+# R session files
+.Rhistory
+.RData

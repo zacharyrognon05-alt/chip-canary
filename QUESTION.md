@@ -241,6 +241,16 @@ specify the common choices of the table above, they do not add specifications):*
      negative: reported as such). If the CI includes 0: "consistent with priced in, not a proof",
      with the largest effect the CI allows (slope x one standard deviation of the predicted part).
      CI by bootstrap over quarters, p by permutation of the predicted parts.*
+   - *E-1 and E-2 (decided by Zach on 2026-10-07, run as exploratory, no variant, reported whatever the
+     result; details written before running): E-1 = OLS slope of the earnings-day reaction ratio on the
+     lead time in days (main definition), per firm, main sample, overlaps excluded; expectation: negative
+     slope. Limit: the lead varies little (fixed calendars). E-2 = monthly release (a) only, per stock:
+     surprise = full-month chip export y/y (ECOS, revised) minus first-20-days y/y of the same month
+     (first release); signed reaction = CAR[-1,+1] x sign(surprise) / sigma, sigma = standard deviation
+     of the 3-day non-event CARs of the estimation window; gap between the top 20% absolute surprises and
+     the others, verdict by the gap rule (0.5 sigma). Limit: surprise built on a revised series. E-2 for
+     the first-20-days release (b) is not computable: no free expectation exists (note of 2026-10-04).
+     Not part of the Holm families (exploratory).*
 
 ### 4.2 Main specifications (32, of which 30 tested)
 
@@ -317,3 +327,4 @@ same specifications for Samsung and the KOSPI are in the appendix.
 | 2026-10-07 | V2-1 (10 cells), V2-2 (3), V2-3 (3), V2-4 (4), main specifications, `src/event_study.py`; 497 events used, 42 excluded for overlap (incl. 13 of 42 SK Hynix earnings). `outputs/v2_1_levels.csv`, `v2_2_3_gaps.csv`, `v2_4_order.csv`, `v2_reactions_by_event.csv` | Yes, all reported (V2-1 first20 SK Hynix and V2-2 SK Hynix in the body). Holm pending V2-5 |
 | 2026-10-07 | V2-5 (2 tests: SK Hynix n = 22, Samsung n = 31, 2018Q4-2026Q2), Holm over the 22 part 2 tests, robustness variants of 4.4 for part 2 (window [0,+3], SOX market model, without 2026-07-31, without 2016-09, overlaps included, V2-5 on revenue, Comtrade, USD). `outputs/v2_main.csv`, `v2_robustness.csv` | Yes, all reported (V2-5 in the body) |
 | 2026-10-07 | Diagnostic for V2-5 (not a specification): slope without the single most influential quarter (SK Hynix: without 2026Q2, -1.90 -> -0.07; Samsung: sign depends on 2026Q1 / 2026Q2) | Reported as a diagnostic |
+| 2026-10-07 | E-1 (2: earnings reaction ratio vs lead time, per firm) and E-2 (3: monthly release, top 20% surprises vs others, per stock; first-20-days part not computable), exploratory, run once without variant at Zach's request. `outputs/exploratory_e1_e2.csv` | Yes, reported (section 6, Table 3) |

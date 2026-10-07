@@ -1,0 +1,9 @@
+spec,n,estimate,ci_lo,ci_hi,p_raw,verdict,note
+"E-1 earnings reaction vs lead time, SK Hynix",27,0.13037270421795388,-0.16732951120132739,0.47645916607563593,0.3535292941411718,not conclusive,"lead 31-37 days, sd 1.7"
+"E-1 earnings reaction vs lead time, Samsung",40,0.049936563277330245,-0.14615942038306132,0.35846834704982417,0.6120775844831033,not conclusive,"lead 14-22 days, sd 1.9"
+"E-2 monthly, top 20% surprises vs others, SK Hynix",23 vs 89,-0.01454293305970928,-0.7740942681690675,0.6461846822964095,0.9590081983603279,not conclusive,top 20%: mean signed -0.07 sigma; others -0.06; |surprise| cut 11.9 pp
+"E-2 monthly, top 20% surprises vs others, Samsung",23 vs 88,-0.44774771521871387,-1.2944702557993562,0.29556023751985533,0.1893621275744851,wrong,top 20%: mean signed -0.48 sigma; others -0.03; |surprise| cut 11.8 pp
+"E-2 monthly, top 20% surprises vs others, KOSPI",23 vs 89,-0.5438398335960496,-1.6396227450219403,0.3524265364378338,0.1205758848230354,wrong,top 20%: mean signed -0.55 sigma; others -0.00; |surprise| cut 11.8 pp
+"E-2 first-20-days, SK Hynix",0,,,,,not computable (no free expectation),
+"E-2 first-20-days, Samsung",0,,,,,not computable (no free expectation),
+"E-2 first-20-days, KOSPI",0,,,,,not computable (no free expectation),

@@ -8,6 +8,19 @@
 **Writing split:** Zach writes sections 1 and 7; the other sections are drafted for Zach to review,
 one at a time, in the order 2, 3, 4, 5, 6.
 
+## Summary (5-6 lines, no jargon, at the top of the note; to be rewritten by Zach with the introduction)
+
+To cover, in plain words: what the export figures are and why investors watch them; that they come
+out weeks before the two companies' results and move very closely with them; that share prices move
+only a little more than usual on publication days, apparently in response to the overall economic
+news rather than to chips; and that whether investors had already absorbed this information remains
+open, because ten years of quarterly data are not enough to tell.
+
+**Style rule for all sections (Zach, 2026-10-07):** each section opens with one sentence in plain
+language saying what it shows; each technical term is explained in a few words at its first
+appearance (look-ahead bias, first release, event study, confidence interval, etc.). Readers include
+non-specialists, such as professors from other disciplines.
+
 ## 1. Introduction (1/2 page, written by Zach)
 
 - Korea publishes chip export figures weeks before Samsung and SK Hynix report earnings; they are
