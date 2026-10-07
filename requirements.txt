@@ -1,0 +1,12 @@
+# Versions pinned for reproducibility (Python 3.14)
+pandas==3.0.6
+numpy==2.5.3
+yfinance==1.7.0
+statsmodels==0.15.0
+plotly==7.1.0
+streamlit==1.64.0
+python-dotenv==1.2.3
+requests==2.34.2
+openpyxl==3.1.5
+olefile==0.47
+pypdf==6.19.0
