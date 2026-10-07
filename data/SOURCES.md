@@ -238,8 +238,12 @@ Checks and corrections:
 - SK Hynix 2020Q3 released late (2020-11-04): confirmed by its IR notice of 2020-10-15 (results
   call on 2020-11-04 09:00). IR notices give the release time; not extracted yet.
 - **Amendments** (`amendment_dates`): almost always filed on a release day (routine). Two exceptions,
-  separate news events: Samsung 2016Q3 (first release 2016-10-07, operating profit cut from 7.8 to
-  5.2 trillion KRW on 2016-10-12), SK Hynix 2022Q4 (amendment 2023-02-23, content not checked).
+  separate news events: Samsung 2016Q3 (first release 2016-10-07: operating profit 7.80 trillion
+  KRW; amendment filed 2016-10-12 (not retrievable from OpenDART, API status 014), which is the
+  revised guidance of about 5.2 trillion KRW announced that day after Samsung stopped the Galaxy Note 7
+  (Samsung Newsroom and CNBC, 12 October 2016, verified 2026-10-07); detailed
+  results 2016-10-27: 5.20 trillion KRW; checked 2026-10-07), SK Hynix 2022Q4 (amendment
+  2023-02-23, content not checked).
 - OpenDART has no quarterly key accounts for 2015 (only the annual report): Q4 2015 cannot be
   derived; final quarterly figures start in 2016Q1.
 - The y/y change of operating profit is not defined when it changes sign: SK Hynix 16 quarters,
