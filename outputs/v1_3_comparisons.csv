@@ -1,0 +1,5 @@
+comparison,n,difference,boot_lo,boot_hi,p_raw,verdict,p_holm
+"SK Hynix > Samsung, revenue",39,0.049,-0.003,0.219,0.059194080591940805,not conclusive,0.1775822417758224
+"SK Hynix > Samsung, OP",39,0.014,-0.081,0.056,0.8157184281571843,not conclusive,0.8157184281571843
+"revenue > OP, SK Hynix",39,0.009,-0.008,0.035,0.31216878312168783,not conclusive,0.6243375662433757
+"revenue > OP, Samsung",39,-0.026,-0.203,-0.005,0.025397460253974602,wrong,0.10158984101589841

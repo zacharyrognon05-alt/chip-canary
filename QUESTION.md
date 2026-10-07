@@ -66,6 +66,22 @@ released?
   (OP_t - OP_t-4) / Revenue_t-4. Revenue growth is unchanged. The correlation thresholds above apply
   as written. Expectations unchanged.*
 
+  *Erratum (2026-10-07): the count "27 SK Hynix quarters" above is wrong; operating profit changes
+  sign in 16 SK Hynix quarters and 1 Samsung quarter. The decision is unchanged.*
+
+  *Precision added by Zach on 2026-10-07, before the V1-2 result (no V1-2 figure computed yet):
+  the two general rules above (by firm: very strong for SK Hynix, medium for Samsung; by measure:
+  strong to very strong for revenue, medium to weak for operating profit) conflict for two cells.
+  Rule chosen: the two effects add up. Start from SK Hynix revenue and go down one category per
+  disadvantage (Samsung instead of SK Hynix; operating profit instead of revenue). Expected
+  categories for V1-2: SK Hynix revenue = very strong; SK Hynix operating profit = medium or strong;
+  Samsung revenue = medium or strong; Samsung operating profit = weak or medium.
+  Verdict per cell: right if the point estimate falls in an expected category, wrong otherwise;
+  conclusive only if the whole 95% confidence interval lies inside (or outside) the expected
+  categories, otherwise reported as not conclusive. Method validated the same day: Pearson
+  correlation, Fisher-z 95% CI (main), moving-block bootstrap CI (blocks of 4 quarters) as a check
+  for autocorrelation; raw p-values now, Holm correction once V1-3 is computed.*
+
 ### Part 2 (market reaction)
 
 Two event types: (a) monthly export release (1st of the following month); (b) first-20-days release
@@ -178,6 +194,54 @@ A plain average of the three growth rates was considered and rejected: it gives 
 base the same weight as a month with a high one. Built in `src/build_dataset.py`
 (`exports_known_first20`); 39 quarters per firm (2016Q2 and 2016Q4 missing).*
 
+*Part 2 implementation choices (validated by Zach on 2026-10-07, before any part 2 result; they
+specify the common choices of the table above, they do not add specifications):*
+1. ***Normal return and normal day:** estimated for each event on a rolling window of the 250 KRX
+   trading days before the event window, excluding event days. Constant mean = mean daily return over
+   that window; normal day = mean absolute 3-day CAR over windows drawn from the same 250 days.
+   Reason: volatility changes strongly over 2016-2026 (e.g. 2026), a single full-sample window would
+   make an ordinary 2026 move look like a strong reaction.*
+2. ***Event days excluded from "normal" days:** the [-1, +1] windows of all three event types
+   (monthly, first-20-days, earnings), whatever the sample.*
+3. ***V2-2 test ((b) vs (a)):** permutation of the event-type labels between the two sets of events;
+   p-value = share of permutations with a gap at least as large as the observed one.*
+4. ***V2-5, look-ahead:** the part of earnings predicted by exports comes from an expanding-window
+   regression of earnings growth on `exports_known_first20`, using for each quarter only quarters
+   whose earnings were already released at t. Burn-in: the first 8 quarters (2016Q3-2018Q3, 2016Q4
+   missing), so about 31 predictions per firm. A burn-in on 2010-2015 was considered and rejected for
+   the main specification: the first-20-days figure does not exist before mid-2016, so training would
+   use a different predictor (full ECOS month T3) than prediction, and 2010 first releases may be on a
+   non-consolidated basis.*
+5. ***External benchmark (robustness):** PHLX Semiconductor index (`^SOX`, Yahoo), previous US
+   session for each KRX day (time zones); downloaded 2026-10-07, the row of 2026-10-07 is an
+   incomplete session and is not used.*
+
+6. ***V2-5 measure and inference (closed by Zach on 2026-10-07):** the part predicted by exports
+   refers to operating profit (`op_change_scaled_first`) in the main specification; revenue is a
+   robustness variant. Inference on the slope by permutation (predicted parts shuffled across
+   quarters). No burn-in robustness on 2010-2015.*
+7. ***Verdict rules for part 2 (written 2026-10-07 before any part 2 result; derived literally from
+   sections 2 and 3, at Zach's request for a right/wrong verdict per result).** Reaction ratio =
+   mean over events of |CAR[-1,+1]| / normal day (normal day as in point 1). 95% CIs by bootstrap
+   over events.*
+   - *V2-1 (a) and (b): no expectation on the average size ("I cannot say on average"):
+     descriptive only, classified as almost no reaction (ratio <= 1), much stronger (>= 2), or in
+     between.*
+   - *V2-1 (c) earnings: expected "some movement" but not "clearly larger than usual". Wrong if the
+     ratio is >= 2, right if below 2; conclusive only if the whole CI is on one side of 2.*
+   - *Gaps with an expected direction X > Y (V2-2: (b) > (a); V2-3: (a) before 2016 > after;
+     V2-4: SK Hynix > Samsung > KOSPI): right if the gap X - Y is >= 0.5 normal day and its CI
+     excludes 0; wrong if the whole CI is below 0.5 (about the same, or reversed); not conclusive
+     otherwise.*
+   - *p-values two-sided (permutation); Holm over the part 2 family (22 tests) once V2-5 is done.*
+   - *V2-5 (written 2026-10-07 before the V2-5 result; derived from section 2, "priced in before
+     earnings are released" means a zero slope): signed earnings-day reaction = CAR[-1, +1] divided
+     by the normal day (normal-day units), regressed by OLS on the predicted part (point 4). Wrong if
+     the 95% CI of the slope excludes 0 (positive: the market still reacts to the predictable part;
+     negative: reported as such). If the CI includes 0: "consistent with priced in, not a proof",
+     with the largest effect the CI allows (slope x one standard deviation of the predicted part).
+     CI by bootstrap over quarters, p by permutation of the predicted parts.*
+
 ### 4.2 Main specifications (32, of which 30 tested)
 
 Part 1:
@@ -242,3 +306,14 @@ same specifications for Samsung and the KOSPI are in the appendix.
 
 | Date | Specification | Result kept? |
 |---|---|---|
+| 2026-10-07 | V1-1, lead time, main definition (first-20-days T3 -> first earnings release), SK Hynix and Samsung; plus 3 comparison combinations per firm (descriptive). `src/leadlag.py`, outputs `outputs/v1_1_*` | Yes, all reported (main in the body, comparisons in the appendix) |
+| 2026-10-07 | V1-2, run 1: invalid (parsing bug in `fetch_earnings.py`, prior-year figures of 2025Q3-2026Q2 missing, n = 35 instead of 39). Detected from the sample size before interpretation; bug fixed (see `CLAUDE.md`, 2026-10-07) | No, discarded |
+| 2026-10-07 | V1-2, run 2: 4 correlations (SK Hynix / Samsung x revenue / OP change scaled), n = 39 each (2016Q3-2026Q2, 2016Q4 missing), Pearson r, Fisher-z and block-bootstrap 95% CI, raw p. `outputs/v1_2_correlations.csv` | Yes, all reported (SK Hynix revenue in the body) |
+| 2026-10-07 | V1-3: 4 comparisons of correlations (SK Hynix vs Samsung for revenue and OP; revenue vs OP for each firm), paired moving-block bootstrap, two-sided p. `outputs/v1_3_comparisons.csv` | Yes, all reported (appendix) |
+| 2026-10-07 | Holm correction over the part 1 family (4 V1-2 + 4 V1-3 tests). `outputs/v1_holm_family.csv` | Yes |
+| 2026-10-07 | E-3 (descriptive): the 4 V1-2 correlations on quarters up to 2022Q4 (n = 25), next to the full sample. `outputs/e3_pre2023_vs_full.csv` | Yes, descriptive only |
+| 2026-10-07 | Robustness r1 (UN Comtrade HS 8542 for T1-T2, n = 37, 2016Q3-2025Q4) and r2 (earnings in USD, n = 39), V1-2 and V1-3 redone. `outputs/v1_robustness.csv` | Yes, all reported (appendix) |
+| 2026-10-07 | Diagnostic for r1 (not a specification): main ECOS V1-2 on the same 37 quarters (r = 0.79-0.90), to separate the source effect (about -0.02) from the loss of 2026Q1-Q2 (about -0.05) | Reported as a diagnostic |
+| 2026-10-07 | V2-1 (10 cells), V2-2 (3), V2-3 (3), V2-4 (4), main specifications, `src/event_study.py`; 497 events used, 42 excluded for overlap (incl. 13 of 42 SK Hynix earnings). `outputs/v2_1_levels.csv`, `v2_2_3_gaps.csv`, `v2_4_order.csv`, `v2_reactions_by_event.csv` | Yes, all reported (V2-1 first20 SK Hynix and V2-2 SK Hynix in the body). Holm pending V2-5 |
+| 2026-10-07 | V2-5 (2 tests: SK Hynix n = 22, Samsung n = 31, 2018Q4-2026Q2), Holm over the 22 part 2 tests, robustness variants of 4.4 for part 2 (window [0,+3], SOX market model, without 2026-07-31, without 2016-09, overlaps included, V2-5 on revenue, Comtrade, USD). `outputs/v2_main.csv`, `v2_robustness.csv` | Yes, all reported (V2-5 in the body) |
+| 2026-10-07 | Diagnostic for V2-5 (not a specification): slope without the single most influential quarter (SK Hynix: without 2026Q2, -1.90 -> -0.07; Samsung: sign depends on 2026Q1 / 2026Q2) | Reported as a diagnostic |

@@ -1,0 +1,5 @@
+firm,measure,n_full,r_full,fisher_lo_full,fisher_hi_full,boot_lo_full,boot_hi_full,category_full,n_pre2023,r_pre2023,fisher_lo_pre2023,fisher_hi_pre2023,boot_lo_pre2023,boot_hi_pre2023,category_pre2023,expected
+SK Hynix,revenue y/y,39,0.948,0.902,0.973,0.816,0.979,very strong,25,0.94,0.866,0.973,0.81,0.974,very strong,very strong
+SK Hynix,OP change / revenue(t-4),39,0.939,0.885,0.968,0.792,0.977,very strong,25,0.948,0.884,0.977,0.828,0.979,very strong,medium or strong
+Samsung Electronics,revenue y/y,39,0.899,0.814,0.946,0.654,0.935,very strong,25,0.717,0.449,0.867,0.494,0.854,strong,medium or strong
+Samsung Electronics,OP change / revenue(t-4),39,0.924,0.859,0.96,0.818,0.959,very strong,25,0.892,0.766,0.951,0.735,0.946,very strong,weak or medium

@@ -1,0 +1,9 @@
+test,p_raw,p_holm,significant_5pct_holm
+"V1-2 SK Hynix, revenue y/y",5.569930972553293e-20,4.455944778042634e-19,True
+"V1-2 SK Hynix, OP change / revenue(t-4)",1.0674167810969912e-18,7.471917467678938e-18,True
+"V1-2 Samsung Electronics, revenue y/y",8.4319234082606e-15,4.2159617041303e-14,True
+"V1-2 Samsung Electronics, OP change / revenue(t-4)",4.636134540129729e-17,2.7816807240778373e-16,True
+"V1-3 SK Hynix > Samsung, revenue",0.059194080591940805,0.1775822417758224,False
+"V1-3 SK Hynix > Samsung, OP",0.8157184281571843,0.8157184281571843,False
+"V1-3 revenue > OP, SK Hynix",0.31216878312168783,0.6243375662433757,False
+"V1-3 revenue > OP, Samsung",0.025397460253974602,0.10158984101589841,False

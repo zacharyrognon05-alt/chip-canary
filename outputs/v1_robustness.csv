@@ -1,0 +1,25 @@
+variant,spec,n,estimate,ci_fisher,category,verdict
+main,"V1-2 SK Hynix, revenue y/y",39,0.948,0.902 to 0.973,very strong,"right, conclusive"
+main,"V1-2 SK Hynix, OP change / revenue(t-4)",39,0.939,0.885 to 0.968,very strong,"wrong, conclusive"
+main,"V1-2 Samsung Electronics, revenue y/y",39,0.899,0.814 to 0.946,very strong,"wrong, conclusive"
+main,"V1-2 Samsung Electronics, OP change / revenue(t-4)",39,0.924,0.859 to 0.960,very strong,"wrong, conclusive"
+main,"V1-3 SK Hynix > Samsung, revenue",39,0.049,boot -0.003 to 0.219,,not conclusive
+main,"V1-3 SK Hynix > Samsung, OP",39,0.014,boot -0.081 to 0.056,,not conclusive
+main,"V1-3 revenue > OP, SK Hynix",39,0.009,boot -0.008 to 0.035,,not conclusive
+main,"V1-3 revenue > OP, Samsung",39,-0.026,boot -0.203 to -0.005,,wrong
+r1 Comtrade for T1-T2,"V1-2 SK Hynix, revenue y/y",37,0.875,0.769 to 0.934,very strong,not conclusive (point estimate: right)
+r1 Comtrade for T1-T2,"V1-2 SK Hynix, OP change / revenue(t-4)",37,0.863,0.748 to 0.928,very strong,not conclusive (point estimate: wrong)
+r1 Comtrade for T1-T2,"V1-2 Samsung Electronics, revenue y/y",37,0.789,0.625 to 0.887,strong,not conclusive (point estimate: right)
+r1 Comtrade for T1-T2,"V1-2 Samsung Electronics, OP change / revenue(t-4)",37,0.893,0.800 to 0.944,very strong,"wrong, conclusive"
+r1 Comtrade for T1-T2,"V1-3 SK Hynix > Samsung, revenue",37,0.086,boot -0.031 to 0.217,,not conclusive
+r1 Comtrade for T1-T2,"V1-3 SK Hynix > Samsung, OP",37,-0.03,boot -0.126 to 0.043,,wrong
+r1 Comtrade for T1-T2,"V1-3 revenue > OP, SK Hynix",37,0.012,boot -0.011 to 0.040,,not conclusive
+r1 Comtrade for T1-T2,"V1-3 revenue > OP, Samsung",37,-0.103,boot -0.216 to -0.029,,wrong
+r2 earnings in USD,"V1-2 SK Hynix, revenue y/y",39,0.957,0.919 to 0.978,very strong,"right, conclusive"
+r2 earnings in USD,"V1-2 SK Hynix, OP change / revenue(t-4)",39,0.941,0.890 to 0.969,very strong,"wrong, conclusive"
+r2 earnings in USD,"V1-2 Samsung Electronics, revenue y/y",39,0.926,0.863 to 0.961,very strong,"wrong, conclusive"
+r2 earnings in USD,"V1-2 Samsung Electronics, OP change / revenue(t-4)",39,0.936,0.880 to 0.966,very strong,"wrong, conclusive"
+r2 earnings in USD,"V1-3 SK Hynix > Samsung, revenue",39,0.031,boot -0.006 to 0.201,,not conclusive
+r2 earnings in USD,"V1-3 SK Hynix > Samsung, OP",39,0.006,boot -0.070 to 0.056,,not conclusive
+r2 earnings in USD,"V1-3 revenue > OP, SK Hynix",39,0.016,boot 0.000 to 0.063,,right
+r2 earnings in USD,"V1-3 revenue > OP, Samsung",39,-0.01,boot -0.160 to 0.014,,wrong

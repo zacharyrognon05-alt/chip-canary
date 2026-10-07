@@ -1,0 +1,5 @@
+firm,measure,n,first_quarter,last_quarter,r,fisher_lo,fisher_hi,boot_lo,boot_hi,p_raw,category,expected,fisher_ci_spans,boot_ci_spans,verdict_fisher,verdict_boot
+SK Hynix,revenue y/y,39,2016Q3,2026Q2,0.948,0.902,0.973,0.816,0.979,5.569930972553293e-20,very strong,very strong,very strong,very strong,"right, conclusive","right, conclusive"
+SK Hynix,OP change / revenue(t-4),39,2016Q3,2026Q2,0.939,0.885,0.968,0.792,0.977,1.0674167810969912e-18,very strong,medium or strong,very strong,strong to very strong,"wrong, conclusive",not conclusive (point estimate: wrong)
+Samsung Electronics,revenue y/y,39,2016Q3,2026Q2,0.899,0.814,0.946,0.654,0.935,8.4319234082606e-15,very strong,medium or strong,very strong,strong to very strong,"wrong, conclusive",not conclusive (point estimate: wrong)
+Samsung Electronics,OP change / revenue(t-4),39,2016Q3,2026Q2,0.924,0.859,0.96,0.818,0.959,4.636134540129729e-17,very strong,weak or medium,very strong,very strong,"wrong, conclusive","wrong, conclusive"

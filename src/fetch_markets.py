@@ -1,4 +1,4 @@
-"""Download daily prices for Samsung Electronics, SK Hynix, the KOSPI and KRW/USD from Yahoo Finance.
+"""Download daily prices for Samsung Electronics, SK Hynix, the KOSPI, KRW/USD and the SOX from Yahoo Finance.
 
 Raw data are cached in data/raw/markets/ and never overwritten unless --refresh is passed,
 so that every later step runs on the same snapshot.
@@ -24,6 +24,7 @@ TICKERS = {
     "skhynix": "000660.KS",
     "kospi": "^KS11",
     "krwusd": "KRW=X",  # KRW per USD, for the exchange-rate control (robustness)
+    "sox": "^SOX",      # PHLX Semiconductor index (US): external benchmark for the market model (robustness)
 }
 START = "2000-01-01"
 
@@ -50,7 +51,7 @@ def check(name: str, df: pd.DataFrame) -> None:
     missing = df[["Open", "High", "Low", "Close", "Adj Close"]].isna().sum()
     print("Missing values:", dict(missing[missing > 0]) or "none")
 
-    if "Volume" in df and name not in ("kospi", "krwusd"):
+    if "Volume" in df and name not in ("kospi", "krwusd", "sox"):
         print(f"Zero-volume days: {(df['Volume'] == 0).sum()}")
 
     if "Stock Splits" in df:

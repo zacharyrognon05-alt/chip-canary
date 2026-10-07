@@ -118,16 +118,24 @@ def parse_prelim(xml_zip: bytes) -> dict:
         unit = plausible[0] if len(plausible) == 1 else None
     out = {"unit_declared": declared, "unit": unit, "unit_corrected": unit != declared}
     for label, name in [("매출액", "revenue"), ("영업이익", "op")]:
-        # Row: current quarter, previous quarter, q/q %, same quarter last year, y/y %
-        m = re.search(label + r"\s*당해실적\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)", text)
-        if not m:
+        # Row up to "누계실적". Two layouts:
+        #   5 cells: current, previous quarter, q/q %, same quarter last year, y/y %
+        #   7 cells (from 2025Q3): current, previous, q/q %, sign-change flag, last year, y/y %, flag
+        m = re.search(label + r"\s*당해실적\s+(.*?)\s+누계실적", text)
+        cells = m.group(1).split() if m else []
+        if len(cells) == 7:
+            cur, ly, yoy = cells[0], cells[4], cells[5]
+        elif len(cells) == 5:
+            cur, ly, yoy = cells[0], cells[3], cells[4]
+        else:
             out[f"{name}_prelim"] = out[f"{name}_prelim_ly"] = out[f"{name}_prelim_yoy_pub"] = None
+            out["layout_error"] = f"{label}: {len(cells)} cells"
             continue
         scale = UNITS.get(unit)
-        cur, ly = number(m.group(1)), number(m.group(4))
+        cur, ly = number(cur), number(ly)
         out[f"{name}_prelim"] = cur * scale if cur is not None and scale else None
         out[f"{name}_prelim_ly"] = ly * scale if ly is not None and scale else None
-        out[f"{name}_prelim_yoy_pub"] = number(m.group(5))  # as published (None if sign change)
+        out[f"{name}_prelim_yoy_pub"] = number(yoy)  # as published (None if sign change)
     return out
 
 
@@ -231,6 +239,10 @@ def main() -> None:
               f"({', '.join(p.loc[p['unit_corrected'], 'quarter'].agg(['min', 'max']))})" if p["unit_corrected"].any() else "")
         for name in ("revenue", "op"):
             print(f"{name}: prelim parsed in {p[f'{name}_prelim'].notna().sum()} of {len(p)} quarters")
+            no_ly = p.loc[p[f"{name}_prelim_ly"].isna(), "quarter"].tolist()
+            print(f"  {name}: quarters without the prior-year figure: {no_ly or 'none'}")
+        if "layout_error" in p and p["layout_error"].notna().any():
+            print("  Unknown table layout:", p.loc[p["layout_error"].notna(), ["quarter", "layout_error"]].values.tolist())
         # Check: first-release figure vs final figure, where both exist
         both = d.dropna(subset=["revenue_prelim", "revenue_final"])
         gap = (both["revenue_prelim"] / both["revenue_final"] - 1) * 100

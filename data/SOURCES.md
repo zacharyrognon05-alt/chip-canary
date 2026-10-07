@@ -14,6 +14,7 @@ Fetched by `src/fetch_markets.py`. Raw files in `data/raw/markets/`, download lo
 | SK Hynix | `000660.KS` | KRW per share | Daily (KRX trading days) | see manifest |
 | KOSPI Composite | `^KS11` | Index points | Daily (KRX trading days) | see manifest |
 | KRW per USD | `KRW=X` | KRW per USD | Daily, from 2003-12-01 | see manifest (2026-10-04) |
+| PHLX Semiconductor index (SOX) | `^SOX` | Index points | Daily (US trading days), from 2000-01-03 | see manifest (2026-10-07); last row 2026-10-07 = incomplete session, not used |
 
 Notes:
 - Both `Close` (unadjusted) and `Adj Close` (split and dividend adjusted) are kept.
@@ -241,8 +242,12 @@ Checks and corrections:
   5.2 trillion KRW on 2016-10-12), SK Hynix 2022Q4 (amendment 2023-02-23, content not checked).
 - OpenDART has no quarterly key accounts for 2015 (only the annual report): Q4 2015 cannot be
   derived; final quarterly figures start in 2016Q1.
-- The y/y change is not defined when operating profit changes sign ("흑자전환", "적자전환"): missing
-  for SK Hynix in 27 quarters (operating profit). The published revenue y/y is also missing in 14
-  SK Hynix quarters (cause not checked; it can be recomputed). Revenue and
-  operating profit of the same quarter a year earlier are available in all but 4 quarters per firm.
+- The y/y change of operating profit is not defined when it changes sign: SK Hynix 16 quarters,
+  Samsung 1 (counted on first-release figures, 2026-10-07). The published y/y cells are missing more
+  often (SK Hynix: 29 for operating profit, 16 for revenue) and are not used: growth is recomputed
+  from the amounts. *(Corrected 2026-10-07: an earlier version said 27 quarters, a count that mixed
+  sign changes with a parsing bug.)*
+- **Two table layouts**: from 2025Q3, filings add a sign-change column after each % column (7 cells
+  instead of 5). Until 2026-10-07 the script read the old layout only, so the prior-year figures of
+  2025Q3-2026Q2 were missing; fixed, and a check now lists quarters without a prior-year figure.
 - No segment data: Samsung's DS division is not in OpenDART (manual entry from IR releases, to do).
