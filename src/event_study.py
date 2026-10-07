@@ -25,6 +25,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 ROOT = Path(__file__).resolve().parents[1]
 PROC = ROOT / "data" / "processed"
@@ -32,6 +34,9 @@ MARKETS = ROOT / "data" / "raw" / "markets"
 OUT = ROOT / "outputs"
 
 STOCKS = {"skhynix": "SK Hynix", "samsung": "Samsung", "kospi": "KOSPI"}
+# Reference categorical palette, slots 1-3 in fixed order (same firm colours as part 1)
+COLORS = {"skhynix": "#2a78d6", "samsung": "#eb6834", "kospi": "#1baf7a"}
+INK, INK2, SURFACE, GRID = "#0b0b0b", "#52514e", "#fcfcfb", "#e9e8e4"
 EST_DAYS, MIN_EST_DAYS, MIN_WINDOWS = 250, 100, 30
 REPS, SEED = 5_000, 20261007
 GAP = 0.5           # meaningful gap, in normal days (QUESTION.md)
@@ -329,6 +334,88 @@ def run(ret: pd.DataFrame, ev: pd.DataFrame, v: Variant) -> tuple[pd.DataFrame, 
     return out, use
 
 
+def figure_reactions(main_r: pd.DataFrame) -> go.Figure:
+    """V2-1 ratios with 95% CIs, grouped by event type; filled marker = significant after Holm."""
+    groups = [("first20", "First-20-days export release (~21st)"), ("monthly", "Monthly export release (1st)"),
+              ("earnings_samsung", "Samsung first earnings release"), ("earnings_sk", "SK Hynix earnings release")]
+    name_to_key = {v: k for k, v in STOCKS.items()}
+    fig = go.Figure()
+    y_labels, y = [], 0
+    for g, label in groups:
+        rows = main_r[main_r["spec"].str.startswith(f"V2-1 {g},")]
+        for r in rows.itertuples():
+            stock = name_to_key[r.spec.split(", ")[-1]]
+            sig = bool(r.p_holm < 0.05)
+            fig.add_scatter(
+                x=[r.estimate], y=[y], mode="markers", showlegend=False,
+                error_x=dict(type="data", symmetric=False, array=[r.ci_hi - r.estimate],
+                             arrayminus=[r.estimate - r.ci_lo], color=COLORS[stock], thickness=2, width=0),
+                marker=dict(size=11, color=COLORS[stock] if sig else SURFACE, line=dict(width=2, color=COLORS[stock])),
+                hovertemplate=(f"<b>{label}</b><br>{STOCKS[stock]}: ratio %{{x:.2f}}"
+                               f"<br>95% CI {r.ci_lo:.2f} to {r.ci_hi:.2f}<br>n = {r.n}"
+                               f"<br>p (Holm) = {r.p_holm:.3f}<extra></extra>"))
+            y_labels.append((y, f"{STOCKS[stock]}"))
+            y -= 1
+        fig.add_annotation(x=0, xref="paper", y=y + len(rows) + 0.45, text=f"<b>{label}</b>", showarrow=False,
+                           xanchor="left", font=dict(size=12, color=INK), bgcolor=SURFACE)
+        y -= 0.8
+    for xv, text in [(1, "Normal day"), (2, "Much stronger (2x)")]:
+        fig.add_vline(x=xv, line_width=1, line_dash="dot", line_color=INK2)
+        fig.add_annotation(x=xv, y=1.02, yref="paper", text=text, showarrow=False, font=dict(size=11, color=INK2))
+    for stock in STOCKS:  # legend: colour = stock
+        fig.add_scatter(x=[None], y=[None], mode="markers", name=STOCKS[stock],
+                        marker=dict(size=11, color=COLORS[stock]))
+    fig.add_scatter(x=[None], y=[None], mode="markers", name="hollow = not significant after Holm",
+                    marker=dict(size=11, color=SURFACE, line=dict(width=2, color=INK2)))
+    fig.update_layout(
+        title=dict(text="Reaction to releases, relative to a normal trading day (2016-2026, |CAR[-1,+1]|)", font=dict(size=16)),
+        xaxis=dict(title="Reaction ratio (1 = normal day)", range=[0.5, 2.4], gridcolor=GRID, zeroline=False),
+        yaxis=dict(tickvals=[t for t, _ in y_labels], ticktext=[l for _, l in y_labels], showgrid=False, zeroline=False),
+        plot_bgcolor=SURFACE, paper_bgcolor=SURFACE, font=dict(color=INK),
+        legend=dict(orientation="h", y=-0.12, x=0), height=640, margin=dict(t=90, l=110))
+    return fig
+
+
+def figure_priced_in(use: pd.DataFrame, main_r: pd.DataFrame) -> go.Figure:
+    """V2-5: earnings-day signed reaction vs the part of earnings predicted by exports; 2026 highlighted."""
+    pred = predicted_parts(Variant())
+    fig = make_subplots(rows=1, cols=2, subplot_titles=["SK Hynix", "Samsung Electronics"], horizontal_spacing=0.1)
+    for k, (firm, group, stock) in enumerate([("skhynix", "earnings_sk", "skhynix"), ("samsung", "earnings_samsung", "samsung")]):
+        e = use[(use["group"] == group) & (use["stock"] == stock) & use["main_sample"]]
+        d = pred[pred["firm"] == firm].merge(e, left_on="date_first_earnings", right_on="release_date")
+        d["y"] = d["car"] / d["normal_day"]
+        for period, symbol, m in [("2018-2025", "circle", ~d["quarter"].str.startswith("2026")),
+                                  ("2026", "diamond", d["quarter"].str.startswith("2026"))]:
+            dd = d[m]
+            fig.add_scatter(x=dd["predicted"] * 100, y=dd["y"], mode="markers+text" if period == "2026" else "markers",
+                            text=dd["quarter"] if period == "2026" else None, textposition="middle left",
+                            textfont=dict(size=11, color=INK2), name=period, legendgroup=period, showlegend=False,
+                            marker=dict(symbol=symbol, size=10, color=COLORS[stock], line=dict(width=2, color=SURFACE)),
+                            customdata=dd["quarter"], row=1, col=k + 1,
+                            hovertemplate="%{customdata}<br>Predicted part: %{x:.1f}%<br>Reaction: %{y:.2f} normal days<extra></extra>")
+        b, a = np.polyfit(d["predicted"], d["y"], 1)
+        xs = np.linspace(d["predicted"].min(), d["predicted"].max(), 2)
+        fig.add_scatter(x=xs * 100, y=a + b * xs, mode="lines", line=dict(color=INK2, width=2), showlegend=False,
+                        hoverinfo="skip", row=1, col=k + 1)
+        r = main_r[main_r["spec"] == f"V2-5 priced-in test, {STOCKS[stock]}"].iloc[0]
+        fig.add_annotation(text=f"slope {r.estimate:.2f} [{r.ci_lo:.2f}, {r.ci_hi:.2f}], n = {r.n}",
+                           xref=f"x{k + 1 if k else ''} domain", yref=f"y{k + 1 if k else ''} domain",
+                           x=0.02, y=0.98, xanchor="left", yanchor="top", showarrow=False, font=dict(size=11, color=INK2))
+        fig.update_xaxes(title_text="Predicted part (OP change / revenue a year earlier, %)",
+                         row=1, col=k + 1, gridcolor=GRID, zeroline=True, zerolinecolor="#d6d5d0")
+        fig.update_yaxes(title_text="Earnings-day reaction (signed CAR, normal days)" if k == 0 else None,
+                         row=1, col=k + 1, gridcolor=GRID, zeroline=True, zerolinecolor="#d6d5d0")
+    for period, symbol in [("2018-2025", "circle"), ("2026", "diamond")]:
+        fig.add_scatter(x=[None], y=[None], mode="markers", name=period, marker=dict(symbol=symbol, size=10, color=INK2))
+    fig.update_layout(
+        title=dict(text="Is the predictable part of earnings priced in? Earnings-day reaction vs export-based prediction",
+                   font=dict(size=16)),
+        plot_bgcolor=SURFACE, paper_bgcolor=SURFACE, font=dict(color=INK),
+        legend=dict(orientation="h", yanchor="bottom", y=1.1, x=0, title_text="Quarter (marker shape): "),
+        height=540, margin=dict(t=150))
+    return fig
+
+
 def main() -> None:
     OUT.mkdir(exist_ok=True)
     ret, ev = load()
@@ -339,6 +426,8 @@ def main() -> None:
         if v.name == "main":
             use.to_csv(OUT / "v2_reactions_by_event.csv", index=False)
             out.to_csv(OUT / "v2_main.csv", index=False)
+            figure_reactions(out).write_html(OUT / "v2_reactions.html", include_plotlyjs="cdn")
+            figure_priced_in(use, out).write_html(OUT / "v2_5_priced_in.html", include_plotlyjs="cdn")
     allres = pd.concat(allres, ignore_index=True)
     allres.to_csv(OUT / "v2_robustness.csv", index=False)
 
@@ -361,7 +450,7 @@ def main() -> None:
                    for s in relevant
                    if g.loc[s, "verdict"] != base.loc[s, "verdict"] or (base.loc[s, "p_holm"] < .05) != (g.loc[s, "p_holm"] < .05)]
         print(f"- {name}: " + ("no change" if not changed else "\n    " + "\n    ".join(changed)))
-    print("\nSaved: outputs/v2_main.csv, v2_robustness.csv, v2_reactions_by_event.csv")
+    print("\nSaved: outputs/v2_main.csv, v2_robustness.csv, v2_reactions_by_event.csv, v2_reactions.html, v2_5_priced_in.html")
 
 
 if __name__ == "__main__":

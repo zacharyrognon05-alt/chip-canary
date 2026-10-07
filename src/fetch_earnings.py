@@ -149,7 +149,8 @@ def prelim_table(firm: str, fl: pd.DataFrame, key: str, refresh: bool) -> pd.Dat
     all_prelim = fl[fl["report_nm"].str.contains(PRELIM, regex=True)].copy()
     all_prelim["quarter"] = all_prelim["rcept_dt"].map(quarter_of)
     # Amendments ([기재정정]) can change the figures after the first release (e.g. Samsung 2016Q3:
-    # operating profit 7.8 -> 5.2 trillion KRW on 2016-10-12): kept as dates, a separate news event
+    # revised guidance on 2016-10-12, operating profit about 7.8 -> 5.2 trillion KRW after the Galaxy
+    # Note 7 stop, per Samsung Newsroom): kept as dates, a separate news event
     is_amend = all_prelim["report_nm"].str.contains("정정", regex=False)
     amendments = all_prelim[is_amend].groupby("quarter")["rcept_dt"].apply(lambda d: " ".join(sorted(set(d))))
     f = all_prelim[~is_amend]

@@ -135,7 +135,9 @@ def figure(q: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title=dict(text="Lead time: from the first-20-days export figure to the first earnings release",
                    font=dict(size=16)),
-        xaxis=dict(title="Quarter", showgrid=False, tickangle=-45),
+        xaxis=dict(title="Quarter", showgrid=False, tickmode="array",
+                   tickvals=sorted(q.loc[q["quarter"].str.endswith("Q1") & q["lead_days_main"].notna(), "quarter"].unique()),
+                   ticktext=[v[:4] for v in sorted(q.loc[q["quarter"].str.endswith("Q1") & q["lead_days_main"].notna(), "quarter"].unique())]),
         yaxis=dict(title="Calendar days", range=[0, y_top], gridcolor="#e9e8e4", zeroline=False),
         plot_bgcolor="#fcfcfb", paper_bgcolor="#fcfcfb", font=dict(color="#0b0b0b"),
         legend=dict(orientation="h", y=1.08, x=0), hovermode="closest", margin=dict(r=140),

@@ -2,11 +2,14 @@
 
 *Draft for Zach's review, 2026-10-07. Figures from `data/SOURCES.md` and the project outputs.*
 
+*In plain terms: this section explains where the numbers come from and, above all, on which day each
+one became public, because the whole question is what investors could know, and when.*
+
 The note rests on one rule: every figure is dated by the day it became public, not by the period it
 describes. A chip export figure for March is information about March, but the market only knows it
 from its release date onwards. Dating data by the period covered would let the analysis use
-information that nobody had at the time, a look-ahead bias that would flatter any "leading
-indicator". The work behind this note is therefore mostly a calendar: when each number was
+information that nobody had at the time. This error, called a *look-ahead bias*, would make any
+"leading indicator" look better than it really was. The work behind this note is therefore mostly a calendar: when each number was
 released, by whom, and in which version.
 
 **Sources.** Market participants follow these releases as an early signal: the first-20-days report is
@@ -16,17 +19,23 @@ Service (KCS) releases exports for the first 20 days of each month, usually on t
 started on 21 June 2016. The trade ministry (MOTIE) releases the full month on the first day of the
 following month. The Bank of Korea's ECOS database provides a monthly export value index for
 semiconductors since January 2000, in a revised version. Earnings come from the electronic disclosure
-system OpenDART: for each quarter, the first preliminary results filing of Samsung Electronics
-(early-month guidance) and of SK Hynix (around the 25th, its only release before the quarterly
-report). Daily prices of both firms and of the KOSPI come from Yahoo Finance.
+system OpenDART: for each quarter, the first *preliminary results filing* (the company's first, unaudited
+announcement of its quarterly results) of Samsung Electronics (an early-month estimate, or
+*guidance*) and of SK Hynix (around the 25th, its only release before the quarterly
+report). Daily prices of both firms and of the KOSPI (the main Korean stock market index) come from Yahoo
+Finance.
 
-**First release, not revised data.** Where possible, the note uses the figure as first published. The
+**First release, not revised data.** Statistics are often corrected after publication. The note
+uses, where possible, the *first release*: the figure as first published, before any later
+correction (*revision*), because it is the figure the market reacted to. The
 semiconductor export growth of the first 20 days was extracted from the attachments of 120 of the 121
 KCS releases (HWP, HWPX and PDF files); the June 2016 release gives only integrated circuits and is
 left missing. The extraction was checked in three ways: the 35 releases published in several formats
 give the same figure in each, eight values match press reports of the time, and the series follows
-the full-month ECOS growth closely (correlation 0.977). Earnings growth is taken from the first
-preliminary filing, which states the same quarter a year earlier. The full-month export figure is the
+the full-month ECOS growth closely (correlation 0.977; a correlation measures from -1 to 1 how
+closely two series move together, 1 meaning perfectly). Earnings growth is taken from the first
+preliminary filing, which also states the same quarter a year earlier, so that *year-on-year* growth
+(the change from the same period a year before) can be computed. The full-month export figure is the
 exception: the MOTIE releases could not be parsed reliably, so the revised ECOS index is used instead.
 Box 1 shows why the distinction matters.
 
@@ -35,11 +44,11 @@ October 2026), 121 first-20-days releases, and 133 first earnings releases of th
 comes from the issuer, never from a rule, with one exception: monthly dates before 2016 cannot be
 sourced, and an extension sample (2003 to 2015) sets them to the first day of the month; results on
 that sample are reported separately. A release on a weekend or holiday is assigned to the next
-trading day. Building the calendar exposed several traps (posting dates up to six days late, a site
+day the stock market is open (*trading day*). Building the calendar exposed several traps (posting dates up to six days late, a site
 migration, a unit error and a layout change in company filings), described in the appendix.
 
 **Cross-check.** Year-on-year growth of the ECOS index tracks UN Comtrade exports of integrated circuits
-(HS 8542, 2013 to 2025) with a correlation of 0.992, which validates its processing (not the
+(HS 8542, the customs code for integrated circuits, 2013 to 2025) with a correlation of 0.992, which validates its processing (not the
 underlying customs data, common to both) and indicates that it is in US dollars, while earnings are
 in won.
 
