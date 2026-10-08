@@ -15,7 +15,7 @@ the absolute CAR by the average move over three ordinary days of the same year: 
 day, 2 twice as much. Significance comes from a *permutation test* against thousands of random ordinary
 days, Holm-adjusted over 22 tests. Releases overlapping another type of release are left out.
 
-**Release days are somewhat busier, never much busier** (Figure 3). Moves are 22% (SK Hynix), 35%
+**Release days are somewhat busier, never much busier** (Figure 2). Moves are 22% (SK Hynix), 35%
 (Samsung) and 25% (KOSPI) larger than usual after the monthly release, all significant after Holm;
 19%, 15% and 3% after the first-20-days release, none significant; 50% and 63% after the two firms'
 results. No ratio reaches 2. Without 31 July 2026, the KOSPI's record day, which falls in one monthly
@@ -33,4 +33,4 @@ first-of-month news, such as manufacturing surveys (PMIs), may also play a part.
 **Robustness.** Against the US chip index (SOX), SK Hynix's reaction to the first-20-days figure becomes
 significant (1.30), a fragile result; other checks are in appendix A4.
 
-*Figure 3: `figures/fig3_reactions.png`.*
+*Figure 2: `figures/fig2_reactions.png`.*

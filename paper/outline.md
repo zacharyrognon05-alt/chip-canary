@@ -54,7 +54,7 @@ non-specialists, such as professors from other disciplines.
 - For Samsung's revenue the link appears stronger during the AI boom (0.72 before 2023):
   descriptive. Expected gaps between firms and measures not confirmed.
 - **Figure 1:** lead time per quarter (`paper/figures/fig1_lead_time.png`).
-- **Figure 2:** exports vs earnings, four panels (`fig2_correlations.png`): moved to appendix A2 in the
+- **Figure A1** (formerly Figure 2): exports vs earnings, four panels (`figA1_correlations.png`): moved to appendix A2 in the
   cutting pass of 2026-10-08; Table 2 stays.
 - **Table 2:** the four correlations, CIs, expected category, verdict.
 
@@ -68,7 +68,7 @@ non-specialists, such as professors from other disciplines.
   more than Samsung or the index. Compatible with, not tested: a reaction to the broad macro signal
   (all exports, other start-of-month releases such as PMIs) rather than to chips.
 - The pre-2016 comparison is not interpretable (rule-based dates).
-- **Figure 3:** reaction ratios (`fig3_reactions.png`).
+- **Figure 2:** reaction ratios (`fig2_reactions.png`).
 
 ## 5. Is the predictable part already priced in? (1/2 page)
 
@@ -77,7 +77,7 @@ non-specialists, such as professors from other disciplines.
 - Compatible with "priced in", not informative: the slope rests on one or two quarters of 2026, the
   CI allows a sizeable effect.
 - What would settle it: more quarters, intraday timing, analyst expectations.
-- **Figure 4:** V2-5 scatter (`fig4_priced_in.png`).
+- **Figure 3:** V2-5 scatter (`fig3_priced_in.png`).
 
 ## 6. Pre-registration and limitations (1/2 page)
 

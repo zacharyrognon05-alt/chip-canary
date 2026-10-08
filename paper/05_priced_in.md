@@ -13,7 +13,7 @@ line fitted between export growth and operating profit) on an *expanding window*
 already public, to avoid look-ahead. The test asks whether the signed reaction rises with it.
 
 **Compatible with "priced in", but not informative.** Neither slope differs significantly from zero
-(Figure 4): -1.90 for SK Hynix (95% CI -2.71 to +1.74, 22 quarters), -1.96 for Samsung (-7.09 to +6.18,
+(Figure 3): -1.90 for SK Hynix (95% CI -2.71 to +1.74, 22 quarters), -1.96 for Samsung (-7.09 to +6.18,
 31 quarters). But SK Hynix's slope rests on one quarter, 2026Q2 (without it, -0.07), and Samsung's sign
 depends on 2026 (diagnostics, appendix A4). With such wide intervals, the data fit both a market that
 had priced the information in and one that still reacted strongly to it.
@@ -22,4 +22,4 @@ had priced the information in and one that still reacted strongly to it.
 *surprise* relative to expectations (Andersen, Bollerslev, Diebold and Vega, 2003); such forecasts are
 commercial and were not available.
 
-*Figure 4: `figures/fig4_priced_in.png`.*
+*Figure 3: `figures/fig3_priced_in.png`.*

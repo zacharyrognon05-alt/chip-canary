@@ -78,9 +78,10 @@ and indicates that it is in US dollars, while earnings are in won.
   by ordinary least squares, p-value by permutation of the predicted parts.
 - **Multiple testing.** Holm correction within each part: 8 tests (part 1), 22 tests (part 2).
 
-## A2 (figure). Exports known at t and earnings, four panels
+## Figure A1. Exports known at t and earnings, four panels
 
-Figure 2: `figures/fig2_correlations.png` (moved from section 3 in the cutting pass of 2026-10-08).
+Figure A1: `figures/figA1_correlations.png` (moved from section 3 in the cutting pass of 2026-10-08,
+formerly Figure 2; renumbered 2026-10-08).
 The full tables of part 1 are in `appendix_tables.md` (A2).
 
 ## A4 (text). Robustness, in words

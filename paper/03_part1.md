@@ -49,4 +49,4 @@ are unchanged (0.94), while Samsung's revenue correlation falls to 0.72 (95% CI 
 is accounting, not forecasting. Whether exports tell the market anything new is the subject of
 sections 4 and 5.
 
-*Figure 1: `figures/fig1_lead_time.png`. Figure 2 (four panels): appendix A2.*
+*Figure 1: `figures/fig1_lead_time.png`. Figure A1 (four panels): appendix A2.*
