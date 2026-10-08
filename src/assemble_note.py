@@ -36,8 +36,13 @@ Bloomberg, republished by Infobae (2021). Korea's Exports Extend Recovery in Jan
 CNBC (2016). Samsung cuts $2.3 billion off its profit guidance due to Galaxy Note 7 crisis. 12 October
 2016. https://www.cnbc.com/2016/10/12/samsung-cuts-2-billion-off-its-profit-guidance-due-to-galaxy-note-7-crisis.html
 
-Korea Times / Yonhap (2026). Exports up 78% in first 20 days of Sept. on robust chip shipments.
-21 September 2026. https://www.koreatimes.co.kr/economy/20260921/exports-up-78-in-first-20-days-of-sept-on-robust-chip-shipments
+Korea Customs Service (2023). '23년 12월 1일 ~ 12월 20일 수출입 현황 (Exports and imports, 1-20 December
+2023). Press release, 21 December 2023.
+https://www.customs.go.kr/kcs/na/ntt/selectNttInfo.do?mi=2891&bbsId=1362&nttSn=10097237&nttSnUrl=c7334bd0c3a799777b5b3a473ef077e8
+
+Korea Customs Service (2026). 2026년 9월 1일 ~ 9월 20일 수출입 현황 [잠정치] (Exports and imports, 1-20
+September 2026, provisional). Press release, 21 September 2026.
+https://www.customs.go.kr/kcs/na/ntt/selectNttInfo.do?mi=2891&bbsId=1362&nttSn=10177443&nttSnUrl=b76927b3d643e2a959deed83783dc1b8
 
 MacKinlay, A. C. (1997). Event Studies in Economics and Finance. *Journal of Economic Literature*,
 35(1), 13-39. https://EconPapers.repec.org/RePEc:aea:jeclit:v:35:y:1997:i:1:p:13-39
@@ -45,6 +50,9 @@ MacKinlay, A. C. (1997). Event Studies in Economics and Finance. *Journal of Eco
 Samsung Electronics (2016). [Update] Samsung Electronics Announces Revised Earnings Guidance for Q3
 2016. Samsung Global Newsroom, 12 October 2016.
 https://news.samsung.com/global/samsung-electronics-announces-earnings-guidance-for-q3-2016
+
+TrendForce News (2025). HBM Market Heats Up as Three Giants Clash, with HBM4 at the Center. 17 September
+2025. https://www.trendforce.com/news/2025/09/17/news-hbm-market-heats-up-as-three-giants-clash-with-hbm4-at-the-center/
 """
 
 CLOSING = ("*Analysis in Python (pandas, statsmodels, plotly); code written with the help of Claude Code "
