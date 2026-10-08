@@ -1,6 +1,6 @@
 """Assemble the research note into one file for reading: paper/draft_full.md.
 
-Abstract + introduction + sections 2 to 6 + [CONCLUSION] marker + references + closing line.
+Abstract + introduction + sections 2 to 6 + conclusion + references + closing line.
 Removes the "Draft for Zach's review" lines and replaces figure pointers by embedded images with
 captions. The section files remain the source; re-run this script after any change.
 
@@ -78,13 +78,17 @@ def main() -> None:
              clean((PAPER / "01_introduction.md").read_text()).replace("# ", "## ", 1), ""]
     for name in SECTIONS:
         parts += [clean((PAPER / name).read_text()).replace("# ", "## ", 1), ""]
-    parts += ["## 7. Conclusion", "", "**[CONCLUSION]** *(written by Zach, about 125 words)*", "", REFERENCES, CLOSING, "",
+    parts += [clean((PAPER / "07_conclusion.md").read_text()).replace("# ", "## ", 1), "", REFERENCES, CLOSING, "",
               "*Appendix: `appendix.md` and `appendix_tables.md`.*"]
     dest = PAPER / "draft_full.md"
     dest.write_text("\n".join(parts) + "\n")
     words = len(re.findall(r"\w+", "\n".join(l for l in dest.read_text().splitlines()
                                              if not l.startswith("|") and not l.startswith("!["))))
-    print(f"Saved: {dest.relative_to(ROOT)} ({words} words incl. tables' notes and references)")
+    body = dest.read_text().split("## References")[0]
+    main_words = len(re.findall(r"\w+", "\n".join(l for l in body.splitlines()
+                                                 if not l.startswith("|") and not l.startswith("!["))))
+    print(f"Saved: {dest.relative_to(ROOT)} ({words} words in total; {main_words} before the references, "
+          f"tables' rows excluded, notes and captions included)")
 
 
 if __name__ == "__main__":
