@@ -4,6 +4,32 @@
 p-values, exploratory specifications) are generated from the result files in `appendix_tables.md`
 by `src/appendix_tables.py`.*
 
+## A0. Data sources (full table)
+
+| Series | Source | Frequency | Coverage used | Version |
+|---|---|---|---|---|
+| Chip exports, first 20 days of the month (y/y %) | KCS press releases | Monthly, ~21st | 2016-07 to 2026-09 (120 releases) | First release |
+| Release dates, full-month exports | MOTIE press releases | Monthly, 1st | 2016-01 to 2026-10 (130); 2003-2015 by rule | Dates only |
+| Chip export value index (2020 = 100, USD) | Bank of Korea, ECOS | Monthly | 2000-01 to 2026-08 | Revised (2026 provisional) |
+| Revenue and operating profit | OpenDART preliminary filings | Quarterly | Samsung 2009Q4, SK Hynix 2010Q1, to 2026Q2 | First release |
+| Revenue and operating profit, final | OpenDART quarterly reports | Quarterly | 2016Q1 to 2026Q2 | Final |
+| Exports of integrated circuits (HS 8542) | UN Comtrade | Monthly | 2013-01 to 2025-12 | Revised (cross-check) |
+| Prices: Samsung, SK Hynix, KOSPI | Yahoo Finance | Daily | 2000 to 2026-09-30 (SK Hynix from 2003-04-15) | Adjusted |
+| KRW/USD, SOX index | Yahoo Finance | Daily | 2003-12 / 2000 to 2026-09 | Robustness only |
+
+*Download dates and series codes are in the project's `data/SOURCES.md`.*
+
+**Checks of the rebuilt first-20-days series.** The semiconductor export growth of the first 20 days
+was extracted from the attachments (HWP, HWPX and PDF files) of 120 of the 121 customs releases; the
+June 2016 release gives only integrated circuits and is left missing. The 35 releases published in
+several formats give the same figure in each, eight values match press reports of the time, and the
+series follows the full-month ECOS growth closely (correlation 0.977).
+
+**Cross-check of the ECOS index.** Year-on-year growth of the ECOS index tracks UN Comtrade exports of
+integrated circuits (HS 8542, the customs code for integrated circuits, 2013 to 2025) with a
+correlation of 0.992, which validates its processing (not the underlying customs data, common to both)
+and indicates that it is in US dollars, while earnings are in won.
+
 ## A1. Building the release calendar: traps found
 
 - **Posting lag (KCS).** The KCS website shows the date a release was posted, which can lag the
@@ -51,3 +77,38 @@ by `src/appendix_tables.py`.*
   quarters minimum); signed reaction = CAR / ordinary day on the firm's first earnings release; slope
   by ordinary least squares, p-value by permutation of the predicted parts.
 - **Multiple testing.** Holm correction within each part: 8 tests (part 1), 22 tests (part 2).
+
+## A2 (figure). Exports known at t and earnings, four panels
+
+Figure 2: `figures/fig2_correlations.png` (moved from section 3 in the cutting pass of 2026-10-08).
+The full tables of part 1 are in `appendix_tables.md` (A2).
+
+## A4 (text). Robustness, in words
+
+- **Part 1.** The correlations are robust to converting earnings into US dollars (changes below 0.03).
+  Replacing ECOS by UN Comtrade data lowers them to 0.79 to 0.89, mostly because Comtrade ends in 2025
+  and misses the two most extreme quarters of 2026; on the same quarters, the source itself changes the
+  correlations by about 0.02.
+- **Part 2.** The conclusions on export releases hold when the reaction window is lengthened to four
+  days (from the release day to three days after), when the release of September 2016 (whose date could
+  not be verified) is dropped, and when overlapping releases are kept. Earnings results are less robust:
+  with the four-day window, almost all SK Hynix earnings releases overlap with the first-20-days figure
+  and cannot be measured, and Samsung's earnings reaction is no longer significant after Holm.
+- **Priced-in test (section 5), diagnostics.** For SK Hynix, the second quarter of 2026 has a predicted
+  part far above all others, and its results release of 29 July 2026 fell in the turbulent days before
+  the record session of 31 July, with an abnormal return of about -33% over three days; without that
+  quarter the slope is -0.07. For Samsung the sign of the slope depends on the first or the second
+  quarter of 2026. The confidence intervals cannot exclude an effect of up to 1.6 ordinary days (SK
+  Hynix) and 1.1 ordinary days (Samsung) for a typical difference (one standard deviation) in the
+  predicted part. The conclusion does not change with revenue instead of operating profit, with UN
+  Comtrade exports, or with earnings in US dollars.
+
+## A7. Other limitations
+
+- *Excluded events.* Releases whose windows overlap are left out, which removes a third of SK Hynix's
+  results releases.
+- *Daily data.* Without the time of day of each release, reactions are measured over three days.
+- *Unadjusted 20-day figures.* Holidays such as the Lunar New Year shift working days between years and
+  distort some first-20-days growth rates.
+- *Prices.* Yahoo Finance data, adjusted for dividends and splits, cannot be redistributed; a
+  re-download may give slightly different adjusted prices.

@@ -1,16 +1,14 @@
 # 6. Pre-registration and limitations
 
-*Draft for Zach's review, 2026-10-07. Expectations and log from `QUESTION.md`.*
+*Draft for Zach's review, 2026-10-08 (after the cutting pass). Expectations and log from `QUESTION.md`.*
 
 *In plain terms: the expected results were written down before any calculation, so that the
 analysis could not be bent to confirm them; several turned out to be wrong, and this section says
 which.*
 
-**Why write expectations first.** With many possible choices (stocks, windows, periods), a study can
-find something "significant" by trying until it works, a practice known as *p-hacking*. To guard
-against it, the expected results, the thresholds that would count as right or wrong, and the full
-list of 32 specifications were written in a dated file before any result was computed, together with
-a log of every specification actually run. The expectations themselves were committed to the
+**Why write expectations first.** A study can find something "significant" by trying until it works
+(*p-hacking*). Here the expectations, thresholds and 32 specifications were written in a dated file
+before any result, with a log of every run. The expectations themselves were committed to the
 project's version history on 7 October 2026, before the first result. Some precisions were added
 later but before the corresponding results (for instance the expected category of each correlation);
 they are dated in the file, but were committed together with the results, so for them the file's
@@ -43,18 +41,6 @@ growth (revised series) minus the first-20-days growth, and the reaction is coun
 of the surprise; no surprise can be measured for the first-20-days release itself, for lack of a
 published expectation.*
 
-**Limitations.**
-- *Revised data for the monthly figure.* The full-month export figure comes from the revised ECOS
-  series, not from the figure first published on the 1st, which could not be extracted reliably.
-- *Short sample.* About forty quarters, and the years 2023 to 2026 carry much of the variation; the
-  most informative test (section 5) rests on 22 and 31 quarters.
-- *Dates before 2016.* Set by rule, not sourced; results on that period are kept apart.
-- *Excluded events.* Releases whose windows overlap are left out, which removes a third of SK Hynix's
-  results releases.
-- *Daily data.* Without the time of day of each release, reactions are measured over three days.
-- *Unadjusted 20-day figures.* Holidays such as the Lunar New Year shift working days between years
-  and distort some first-20-days growth rates.
-- *Mechanical overlap.* SK Hynix's sales are largely Korean chip exports, so a strong correlation
-  partly reflects accounting, not forecasting.
-- *Prices.* Yahoo Finance data, adjusted for dividends and splits, cannot be redistributed; a
-  re-download may give slightly different adjusted prices.
+**Limitations.** Revised data for the monthly figure; a short sample dominated by 2023 to 2026; rule-based
+dates before 2016; and the accounting overlap between SK Hynix's sales and exports. Others are in
+appendix A7.

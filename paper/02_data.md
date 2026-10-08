@@ -1,56 +1,30 @@
 # 2. Data and the information calendar
 
-*Draft for Zach's review, 2026-10-07. Figures from `data/SOURCES.md` and the project outputs.*
+*Draft for Zach's review, 2026-10-08 (after the cutting pass). Figures from `data/SOURCES.md` and the project outputs.*
 
 *In plain terms: this section explains where the numbers come from and, above all, on which day each
 one became public, because the whole question is what investors could know, and when.*
 
-The note rests on one rule: every figure is dated by the day it became public, not by the period it
-describes. A chip export figure for March is information about March, but the market only knows it
-from its release date onwards. Dating data by the period covered would let the analysis use
-information that nobody had at the time. This error, called a *look-ahead bias*, would make any
-"leading indicator" look better than it really was. The work behind this note is therefore mostly a calendar: when each number was
-released, by whom, and in which version.
+Every figure is dated by the day it became public, not by the period it describes. Dating by the
+period would use information nobody had at the time, a *look-ahead bias* that makes any "leading
+indicator" look better than it was.
 
-**Sources.** Market participants follow these releases as an early signal: the first-20-days report is
-"closely watched as an early indicator of global trade" (Bloomberg, republished by Infobae, 21 January
-2021). Table 1 lists the series. Exports come from three publications. The Korea Customs
-Service (KCS) releases exports for the first 20 days of each month, usually on the 21st; this release
-started on 21 June 2016. The trade ministry (MOTIE) releases the full month on the first day of the
-following month. The Bank of Korea's ECOS database provides a monthly export value index for
-semiconductors since January 2000, in a revised version. Earnings come from the electronic disclosure
-system OpenDART: for each quarter, the first *preliminary results filing* (the company's first, unaudited
-announcement of its quarterly results) of Samsung Electronics (an early-month estimate, or
-*guidance*) and of SK Hynix (around the 25th, its only release before the quarterly
-report). Daily prices of both firms and of the KOSPI (the main Korean stock market index) come from Yahoo
-Finance.
+**Sources.** The first-20-days report is "closely watched as an early indicator of global trade"
+(Bloomberg, republished by Infobae, 21 January 2021). Korea Customs publishes it around the 21st (since
+June 2016); the trade ministry publishes the full month on the 1st. Earnings come from each firm's
+first *preliminary results filing* (its first, unaudited announcement of quarterly results): Samsung's
+early-month estimate, or *guidance*, and SK Hynix's release around the 25th. Prices cover both firms and
+the KOSPI (the main Korean stock market index).
 
-**First release, not revised data.** Statistics are often corrected after publication. The note
-uses, where possible, the *first release*: the figure as first published, before any later
-correction (*revision*), because it is the figure the market reacted to. The
-semiconductor export growth of the first 20 days was extracted from the attachments of 120 of the 121
-KCS releases (HWP, HWPX and PDF files); the June 2016 release gives only integrated circuits and is
-left missing. The extraction was checked in three ways: the 35 releases published in several formats
-give the same figure in each, eight values match press reports of the time, and the series follows
-the full-month ECOS growth closely (correlation 0.977; a correlation measures from -1 to 1 how
-closely two series move together, 1 meaning perfectly). Earnings growth is taken from the first
-preliminary filing, which also states the same quarter a year earlier, so that *year-on-year* growth
-(the change from the same period a year before) can be computed. The full-month export figure is the
-exception: the MOTIE releases could not be parsed reliably, so the revised ECOS index is used instead.
-Box 1 shows why the distinction matters.
+**First release, not revised data.** Where possible the note uses the *first release*, the figure as
+first published, before any later correction (*revision*), because it is what the market reacted to.
+The first-20-days chip export growth was rebuilt from 121 customs releases; the first earnings filings
+also state the same quarter a year earlier, giving *year-on-year* growth (the change from a year
+before). The full-month figure is the exception: it comes from the Bank of Korea's revised index.
 
-**The calendar.** The release calendar holds 540 events: 130 monthly releases (January 2016 to
-October 2026), 121 first-20-days releases, and 133 first earnings releases of the two firms. Each date
-comes from the issuer, never from a rule, with one exception: monthly dates before 2016 cannot be
-sourced, and an extension sample (2003 to 2015) sets them to the first day of the month; results on
-that sample are reported separately. A release on a weekend or holiday is assigned to the next
-day the stock market is open (*trading day*). Building the calendar exposed several traps (posting dates up to six days late, a site
-migration, a unit error and a layout change in company filings), described in the appendix.
-
-**Cross-check.** Year-on-year growth of the ECOS index tracks UN Comtrade exports of integrated circuits
-(HS 8542, the customs code for integrated circuits, 2013 to 2025) with a correlation of 0.992, which validates its processing (not the
-underlying customs data, common to both) and indicates that it is in US dollars, while earnings are
-in won.
+**The calendar** holds 540 events, each dated by its issuer; releases on a weekend or holiday count for
+the next *trading day* (day the stock market is open). Monthly dates before 2016 cannot be sourced and
+are set by rule in a separate extension sample (2003 to 2015). Appendix A1 lists the traps met.
 
 > **Box 1. Why the first release matters: Samsung, third quarter of 2016.**
 > On 7 October 2016, Samsung's first preliminary filing put third-quarter operating profit at about KRW
@@ -60,18 +34,14 @@ in won.
 > series records only 5.2, while from 7 to 12 October the market knew only 7.8. A study using revised data would
 > date the bad news wrongly.
 
-**Table 1. Data sources**
+**Table 1. Main data sources**
 
-| Series | Source | Frequency | Coverage used | Version |
-|---|---|---|---|---|
-| Chip exports, first 20 days of the month (y/y %) | KCS press releases | Monthly, ~21st | 2016-07 to 2026-09 (120 releases) | First release |
-| Release dates, full-month exports | MOTIE press releases | Monthly, 1st | 2016-01 to 2026-10 (130); 2003-2015 by rule | Dates only |
-| Chip export value index (2020 = 100, USD) | Bank of Korea, ECOS | Monthly | 2000-01 to 2026-08 | Revised (2026 provisional) |
-| Revenue and operating profit | OpenDART preliminary filings | Quarterly | Samsung 2009Q4, SK Hynix 2010Q1, to 2026Q2 | First release |
-| Revenue and operating profit, final | OpenDART quarterly reports | Quarterly | 2016Q1 to 2026Q2 | Final |
-| Exports of integrated circuits (HS 8542) | UN Comtrade | Monthly | 2013-01 to 2025-12 | Revised (cross-check) |
-| Prices: Samsung, SK Hynix, KOSPI | Yahoo Finance | Daily | 2000 to 2026-09-30 (SK Hynix from 2003-04-15) | Adjusted |
-| KRW/USD, SOX index | Yahoo Finance | Daily | 2003-12 / 2000 to 2026-09 | Robustness only |
+| Series | Source | Coverage used | Version |
+|---|---|---|---|
+| Chip exports, first 20 days of the month (y/y %), rebuilt from 121 releases | Korea Customs Service | 2016-07 to 2026-09 | First release |
+| Chip export value index, full month (USD) | Bank of Korea, ECOS | 2000-01 to 2026-08 | Revised |
+| Revenue and operating profit, Samsung and SK Hynix | OpenDART preliminary filings | 2009Q4 / 2010Q1 to 2026Q2 | First release |
+| Daily prices: Samsung, SK Hynix, KOSPI | Yahoo Finance | 2000 to 2026-09-30 | Adjusted |
 
-*Main sample of the analysis: 2016 to 2026, sourced dates only. Download dates and series codes are
-in the project's `data/SOURCES.md`.*
+*Full table, release-date sources and robustness series: appendix A0. Main sample of the analysis:
+2016 to 2026, sourced dates only.*

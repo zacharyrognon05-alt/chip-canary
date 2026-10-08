@@ -37,7 +37,8 @@ non-specialists, such as professors from other disciplines.
   first-release earnings from 133 filings.
 - Pitfalls found: board posting dates up to 6 days late, a site migration that erased pre-2016
   dates, a unit error in Samsung's filings, a table layout change in 2025.
-- **Table 1:** sources, coverage, frequency, vintage.
+- **Table 1:** reduced to 4 rows in the body (first-20-days exports rebuilt from 121 releases, ECOS,
+  earnings, prices); full version in appendix A0 (cutting pass, 2026-10-08).
 - **Box 1, why the first release matters (Samsung 2016Q3):** first preliminary filing on 7 October
   2016, operating profit about KRW 7.8 trillion; revised guidance on 12 October 2016, about KRW 5.2
   trillion, after Samsung stopped sales, exchanges and production of the Galaxy Note 7 (Samsung
@@ -53,8 +54,8 @@ non-specialists, such as professors from other disciplines.
 - For Samsung's revenue the link appears stronger during the AI boom (0.72 before 2023):
   descriptive. Expected gaps between firms and measures not confirmed.
 - **Figure 1:** lead time per quarter (`paper/figures/fig1_lead_time.png`).
-- **Figure 2:** exports vs earnings, four panels (`fig2_correlations.png`); first candidate for the
-  appendix if space runs short (Table 2 then stays).
+- **Figure 2:** exports vs earnings, four panels (`fig2_correlations.png`): moved to appendix A2 in the
+  cutting pass of 2026-10-08; Table 2 stays.
 - **Table 2:** the four correlations, CIs, expected category, verdict.
 
 ## 4. Do markets react on release days? (1 1/4 pages)
