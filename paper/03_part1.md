@@ -16,13 +16,6 @@ Hynix and 16 days for Samsung (Figure 1), just above Samsung's *pre-registered* 
 (written down before any result, so the bar could not be moved). From the monthly release on the 1st,
 Samsung's guidance follows after only 6 days.
 
-**The link is very strong** (Table 2). The *correlation* (from -1 to 1, how closely two series move
-together) between exports known at t and the results released two to five weeks later is 0.90 to 0.95,
-*statistically significant* (very unlikely by chance) even after a *Holm correction*, which makes each
-test stricter when many are run. The 95% *confidence interval*, the range of values compatible with the
-data, is given by the standard formula (Fisher) and by a *block bootstrap*, a resampling method that
-keeps consecutive quarters together.
-
 **Table 2. Exports known at t and first-release earnings, 2016Q3-2026Q2 (n = 39 per cell)**
 
 | Firm | Earnings measure | r | 95% CI (Fisher) | 95% CI (block bootstrap) | Expected | Outcome |
@@ -35,6 +28,13 @@ keeps consecutive quarters together.
 *Categories: weak < 0.3, medium 0.3 to 0.6, strong 0.6 to 0.8, very strong 0.8 or more, fixed before the
 results. For the second and third rows the bootstrap interval reaches "strong", so the outcome is
 conclusive with the Fisher interval only.*
+
+**The link is very strong** (Table 2). The *correlation* (from -1 to 1, how closely two series move
+together) between exports known at t and the results released two to five weeks later is 0.90 to 0.95,
+*statistically significant* (very unlikely by chance) even after a *Holm correction*, which makes each
+test stricter when many are run. The 95% *confidence interval*, the range of values compatible with the
+data, is given by the standard formula (Fisher) and by a *block bootstrap*, a resampling method that
+keeps consecutive quarters together.
 
 **No clear gap between firms or measures.** The link was expected to be weaker for Samsung, whose chips
 are only part of the group, and for operating profit, which also depends on costs. Neither gap is

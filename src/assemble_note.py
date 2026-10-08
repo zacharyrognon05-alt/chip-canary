@@ -55,8 +55,10 @@ TrendForce News (2025). HBM Market Heats Up as Three Giants Clash, with HBM4 at 
 2025. https://www.trendforce.com/news/2025/09/17/news-hbm-market-heats-up-as-three-giants-clash-with-hbm4-at-the-center/
 """
 
-CLOSING = ("*Analysis in Python (pandas, statsmodels, plotly); code written with the help of Claude Code "
-           "(Anthropic). All data sources, scripts and the pre-registration log are in the project repository.*")
+CLOSING = ("*Analysis in Python (pandas, statsmodels, plotly). Research question, design, pre-registered "
+           "expectations and all editorial decisions by the author; code and text drafted with Claude Code "
+           "(Anthropic) and reviewed by the author. All data sources, scripts and the pre-registration log are in "
+           "the project repository.*")
 
 
 def clean(text: str) -> str:

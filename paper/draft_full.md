@@ -2,11 +2,13 @@
 
 *Release timing, earnings and market reactions, 2016-2026*
 
+Zachary Rognon, Global Studies Institute, University of Geneva, 2026
+
 **Abstract.** Korea publishes its chip export figures early, around the 21st and the 1st of each month, while SK Hynix, a chip maker, and Samsung, whose results depend heavily on chips, report their earnings weeks later. If investors already watch these figures, do the two firms' earnings still tell the market anything new? I dated every figure by the day it became public and used first-release values where they exist, rebuilding the first-20-days series myself from 121 Korean customs releases, then compared these exports with the earnings reported later and measured how share prices moved on release days, writing down my predictions before seeing any result. Exports known by the 21st track the earnings published two to five weeks later very closely, and for Samsung the link with revenue appears to have strengthened during the AI boom. Yet share prices move only moderately more than usual on release days, and the 20-day figure does not move markets more than the monthly one. Whether this information is already priced in on earnings day remains open: the data are consistent with the idea, but too few to establish it.
 
 ## 1. Introduction
 
-Semiconductors have become the core of the South Korean economy: in the first twenty days of September 2026, they made up nearly half of the country's exports, up from less than a fifth at the end of 2023 (47.8% against 17.6% in the first twenty days of December 2023; Korea Customs Service, 21 September 2026 and 21 December 2023). Samsung and SK Hynix are two of the three firms that dominate high-bandwidth memory, the memory used in artificial intelligence chips (TrendForce, 17 September 2025), a sector now central to the world economy and to international relations alike. Korea's export figures, released around the 21st and the 1st of each month, are therefore closely watched by investors worldwide. This note asks a simple question: if these figures already signal how the two firms are doing, do their quarterly earnings still tell the market anything new? To answer it, the note rebuilds the information calendar, from export release to earnings release, and tests predictions written down before seeing any result.
+Semiconductors have become the core of South Korea's exports: in the first twenty days of September 2026, they made up nearly half of the total, up from less than a fifth at the end of 2023 (47.8% against 17.6% in the first twenty days of December 2023; Korea Customs Service, 21 September 2026 and 21 December 2023). Samsung and SK Hynix are two of the three firms that dominate high-bandwidth memory, the memory used in artificial intelligence chips (TrendForce, 17 September 2025), a sector now central to the world economy and to international relations alike. Korea's export figures, released around the 21st and the 1st of each month, are therefore closely watched by investors worldwide. This note asks a simple question: if these figures already signal how the two firms are doing, do their quarterly earnings still tell the market anything new? To answer it, the note rebuilds the information calendar, from export release to earnings release, and tests predictions written down before seeing any result.
 
 
 ## 2. Data and the information calendar
@@ -71,13 +73,6 @@ Hynix and 16 days for Samsung (Figure 1), just above Samsung's *pre-registered* 
 (written down before any result, so the bar could not be moved). From the monthly release on the 1st,
 Samsung's guidance follows after only 6 days.
 
-**The link is very strong** (Table 2). The *correlation* (from -1 to 1, how closely two series move
-together) between exports known at t and the results released two to five weeks later is 0.90 to 0.95,
-*statistically significant* (very unlikely by chance) even after a *Holm correction*, which makes each
-test stricter when many are run. The 95% *confidence interval*, the range of values compatible with the
-data, is given by the standard formula (Fisher) and by a *block bootstrap*, a resampling method that
-keeps consecutive quarters together.
-
 **Table 2. Exports known at t and first-release earnings, 2016Q3-2026Q2 (n = 39 per cell)**
 
 | Firm | Earnings measure | r | 95% CI (Fisher) | 95% CI (block bootstrap) | Expected | Outcome |
@@ -90,6 +85,13 @@ keeps consecutive quarters together.
 *Categories: weak < 0.3, medium 0.3 to 0.6, strong 0.6 to 0.8, very strong 0.8 or more, fixed before the
 results. For the second and third rows the bootstrap interval reaches "strong", so the outcome is
 conclusive with the Fisher interval only.*
+
+**The link is very strong** (Table 2). The *correlation* (from -1 to 1, how closely two series move
+together) between exports known at t and the results released two to five weeks later is 0.90 to 0.95,
+*statistically significant* (very unlikely by chance) even after a *Holm correction*, which makes each
+test stricter when many are run. The 95% *confidence interval*, the range of values compatible with the
+data, is given by the standard formula (Fisher) and by a *block bootstrap*, a resampling method that
+keeps consecutive quarters together.
 
 **No clear gap between firms or measures.** The link was expected to be weaker for Samsung, whose chips
 are only part of the group, and for operating profit, which also depends on costs. Neither gap is
@@ -253,6 +255,6 @@ https://news.samsung.com/global/samsung-electronics-announces-earnings-guidance-
 TrendForce News (2025). HBM Market Heats Up as Three Giants Clash, with HBM4 at the Center. 17 September
 2025. https://www.trendforce.com/news/2025/09/17/news-hbm-market-heats-up-as-three-giants-clash-with-hbm4-at-the-center/
 
-*Analysis in Python (pandas, statsmodels, plotly); code written with the help of Claude Code (Anthropic). All data sources, scripts and the pre-registration log are in the project repository.*
+*Analysis in Python (pandas, statsmodels, plotly). Research question, design, pre-registered expectations and all editorial decisions by the author; code and text drafted with Claude Code (Anthropic) and reviewed by the author. All data sources, scripts and the pre-registration log are in the project repository.*
 
 *Appendix: `appendix.md` and `appendix_tables.md`.*
