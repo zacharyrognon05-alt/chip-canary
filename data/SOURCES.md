@@ -59,7 +59,7 @@ No estimation, only assembly. All in `data/processed/` (regenerated, not committ
 | File | Content |
 |---|---|
 | `daily_returns.csv` | Simple daily returns (Adj Close) of Samsung, SK Hynix, KOSPI on KRX trading days; `extreme_day` flags 2026-07-31 |
-| `events.csv` | The 540 calendar events, each with `event_day` (first KRX trading day on or after the release date) and flags `main_sample`, `rule_based_date`, `unverified_date` |
+| `events.csv` | The 539 calendar events up to the sample end (2026-09-30), each with `event_day` (first KRX trading day on or after the release date) and flags `main_sample`, `rule_based_date`, `unverified_date` |
 | `quarterly.csv` | Part 1, one row per firm and quarter (133): dates of the information timeline, exports known at each date, first-release earnings growth, KRW/USD, lead times in days |
 
 Construction rules:

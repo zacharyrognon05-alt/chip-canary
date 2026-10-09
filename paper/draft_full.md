@@ -33,7 +33,7 @@ The first-20-days chip export growth was rebuilt from 121 customs releases; the 
 also state the same quarter a year earlier, giving *year-on-year* growth (the change from a year
 before). The full-month figure is the exception: it comes from the Bank of Korea's revised index.
 
-**The calendar** holds 540 events, each dated by its issuer; releases on a weekend or holiday count for
+**The calendar** holds 539 events, each dated by its issuer; releases on a weekend or holiday count for
 the next *trading day* (day the stock market is open). Monthly dates before 2016 cannot be sourced and
 are set by rule in a separate extension sample (2003 to 2015). Appendix A1 lists the traps met.
 

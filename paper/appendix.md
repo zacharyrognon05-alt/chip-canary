@@ -9,7 +9,7 @@ by `src/appendix_tables.py`.*
 | Series | Source | Frequency | Coverage used | Version |
 |---|---|---|---|---|
 | Chip exports, first 20 days of the month (y/y %) | KCS press releases | Monthly, ~21st | 2016-07 to 2026-09 (120 releases) | First release |
-| Release dates, full-month exports | MOTIE press releases | Monthly, 1st | 2016-01 to 2026-10 (130); 2003-2015 by rule | Dates only |
+| Release dates, full-month exports | MOTIE press releases | Monthly, 1st | 2016-01 to 2026-09 (129); 2003-2015 by rule | Dates only |
 | Chip export value index (2020 = 100, USD) | Bank of Korea, ECOS | Monthly | 2000-01 to 2026-08 | Revised (2026 provisional) |
 | Revenue and operating profit | OpenDART preliminary filings | Quarterly | Samsung 2009Q4, SK Hynix 2010Q1, to 2026Q2 | First release |
 | Revenue and operating profit, final | OpenDART quarterly reports | Quarterly | 2016Q1 to 2026Q2 | Final |
