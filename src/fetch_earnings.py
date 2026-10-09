@@ -50,18 +50,51 @@ UNITS = {"조원": 1e12, "억원": 1e8, "백만원": 1e6, "천원": 1e3}
 
 # ---------------------------------------------------------------- API with cache
 
+class DartAPIError(RuntimeError):
+    """OpenDART answered with an error instead of data (e.g. status 800: system maintenance)."""
+
+
+ZIP_SIGNATURE = b"PK\x03\x04"
+STATUS_HINTS = {"800": "system maintenance, try again later", "020": "daily call limit reached, try tomorrow",
+                "010": "unregistered key", "011": "key not allowed", "014": "file not found"}
+
+
+def api_error(content: bytes, endpoint: str, params: dict) -> DartAPIError:
+    """Build a readable error from an OpenDART XML or JSON error answer."""
+    text = content.decode("utf-8", errors="replace")
+    status = re.search(r'"?status"?\s*[:>]\s*"?(\d{3})', text)
+    message = re.search(r'(?:<message>|"message"\s*:\s*")([^<"]+)', text)
+    code = status.group(1) if status else "unknown"
+    hint = STATUS_HINTS.get(code, "see the OpenDART status codes")
+    return DartAPIError(f"OpenDART error on {endpoint} {params}: status {code} "
+                        f"({message.group(1).strip() if message else 'no message'}; {hint}). "
+                        "Nothing was cached; re-run the script once the service answers normally.")
+
+
 def call(endpoint: str, params: dict, cache: Path, key: str, refresh: bool, binary: bool = False):
+    """Call OpenDART with a file cache. Error answers are never cached: an error saved as data would
+    block every later run (a cached file is reused without asking the API again)."""
     if cache.exists() and not refresh:
-        return cache.read_bytes() if binary else json.loads(cache.read_text())
+        content = cache.read_bytes()
+        if not binary:
+            return json.loads(content)
+        if content.startswith(ZIP_SIGNATURE):
+            return content
+        # An earlier version could cache an error answer as a document: ignore it and ask again
     r = requests.get(API + endpoint, params={"crtfc_key": key, **params}, timeout=120)
     r.raise_for_status()
     time.sleep(PAUSE)
     if binary:
+        if not r.content.startswith(ZIP_SIGNATURE):
+            raise api_error(r.content, endpoint, params)
         cache.write_bytes(r.content)
         return r.content
-    payload = r.json()
+    try:
+        payload = r.json()
+    except ValueError:  # an XML error page instead of JSON
+        raise api_error(r.content, endpoint, params)
     if payload.get("status") not in ("000", "013"):  # 013 = no data
-        raise RuntimeError(f"{endpoint} {params}: {payload.get('status')} {payload.get('message')}")
+        raise api_error(r.content, endpoint, params)
     cache.write_text(json.dumps(payload, ensure_ascii=False))
     return payload
 
@@ -219,11 +252,14 @@ def main() -> None:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
 
     tables = []
-    for firm in FIRMS:
-        fl = filings(firm, key, args.refresh)
-        prelim = prelim_table(firm, fl, key, args.refresh)
-        final = final_table(firm, key, args.refresh)
-        tables.append(prelim.merge(final, on=["firm", "quarter"], how="outer"))
+    try:
+        for firm in FIRMS:
+            fl = filings(firm, key, args.refresh)
+            prelim = prelim_table(firm, fl, key, args.refresh)
+            final = final_table(firm, key, args.refresh)
+            tables.append(prelim.merge(final, on=["firm", "quarter"], how="outer"))
+    except DartAPIError as exc:
+        raise SystemExit(str(exc))
     df = pd.concat(tables, ignore_index=True).sort_values(["firm", "quarter"])
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUT_FILE, index=False)
