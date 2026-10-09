@@ -68,7 +68,14 @@ leadlag.py  event_study.py                                                # part
 export_figures.py  appendix_tables.py  assemble_note.py  build_pdf.py     # figures, note, PDF
 ```
 
-Raw downloads are cached and reused. Yahoo Finance prices are not redistributed; a new download may
+**Fixed sample end.** The analysis uses prices and release events up to 30 September 2026 and earnings
+up to 2026Q2 (`SAMPLE_END_DATE` and `SAMPLE_END_QUARTER` in `src/build_dataset.py`, `SAMPLE_END` in
+`src/fetch_earnings.py`). Data published later are ignored even if downloaded, so a re-run reproduces
+the note. To extend the sample, change these parameters and re-run with `--refresh` where needed.
+
+Raw downloads are cached and reused; cached OpenDART answers are final and the API is asked again only
+with `--refresh`. If OpenDART answers with an error (e.g. maintenance), the script stops with a message
+and caches nothing. Yahoo Finance prices are not redistributed; a new download may
 give slightly different adjusted prices, so results can differ in the last decimals (the snapshot
 used is dated in `data/SOURCES.md`). `build_pdf.py` uses headless Google Chrome (macOS path in the
 script).

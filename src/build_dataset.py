@@ -32,6 +32,11 @@ SKHYNIX_FIRST_RETURN = "2003-04-15"  # first session after the 1:21 reverse spli
 EXTREME_DAY = "2026-07-31"           # KOSPI +17.9%: every market result with and without it
 UNVERIFIED_EVENT = ("first20", "2016-09")  # board date only (22nd instead of the 21st)
 MAIN_SAMPLE_FROM = "2016-01-01"      # part 2 main sample: sourced dates only
+# Fixed end of the sample, so that a later re-run reproduces the note exactly (decision of 2026-10-09):
+# prices and events up to 30 September 2026, earnings up to the second quarter of 2026. Data published
+# after these dates (e.g. Samsung's 2026Q3 guidance of 2026-10-08) are ignored even if downloaded.
+SAMPLE_END_DATE = "2026-09-30"
+SAMPLE_END_QUARTER = "2026Q2"
 
 
 # ---------------------------------------------------------------- markets
@@ -88,6 +93,7 @@ def quarterly(cal: pd.DataFrame) -> pd.DataFrame:
     f20.index = pd.PeriodIndex(f20.index, freq="M")
 
     earn = pd.read_csv(PROC / "earnings.csv")
+    earn = earn[earn["quarter"] <= SAMPLE_END_QUARTER]
     fx = pd.read_csv(MARKETS / "krwusd.csv", index_col="date", parse_dates=True)["Close"]
     fx_q = fx.groupby(fx.index.to_period("Q")).mean()
 
@@ -139,10 +145,12 @@ def quarterly(cal: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     prices = load_prices()
     days = trading_days(prices)
+    days = days[days <= SAMPLE_END_DATE]
     ret = daily_returns(prices, days)
     ret.to_csv(PROC / "daily_returns.csv")
 
     cal = pd.read_csv(PROC / "release_calendar.csv", dtype=str)
+    cal = cal[cal["release_date"] <= SAMPLE_END_DATE]
     ev = map_events(cal, days)
     ev.to_csv(PROC / "events.csv", index=False)
 
@@ -150,6 +158,7 @@ def main() -> None:
     q.to_csv(PROC / "quarterly.csv", index=False)
 
     # ---- Checks only (no result is computed or printed here)
+    print(f"Sample end: prices and events up to {SAMPLE_END_DATE}, earnings up to {SAMPLE_END_QUARTER}")
     print(f"Trading days: {len(days)}, {days.min().date()} -> {days.max().date()}")
     print("Missing daily returns:", ret.filter(like="ret_").isna().sum().to_dict())
     print(f"\nEvents: {len(ev)}; not mapped to a trading day: {ev['event_day'].isna().sum()} "

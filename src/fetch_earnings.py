@@ -24,7 +24,6 @@ import os
 import re
 import time
 import zipfile
-from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -39,6 +38,10 @@ API = "https://opendart.fss.or.kr/api/"
 # corp_code from OpenDART corpCode.xml (checked 2026-10-04): stock codes 005930 and 000660
 FIRMS = {"samsung": "00126380", "skhynix": "00164779"}
 FIRST_YEAR = 2010
+# Fixed end of the sample (same as src/build_dataset.py, decision of 2026-10-09): filings up to
+# 30 September 2026. Cached answers are final; the API is asked again only with --refresh.
+SAMPLE_END = "20260930"
+LAST_YEAR = int(SAMPLE_END[:4])
 # Preliminary results: "연결재무제표기준영업(잠정)실적" (consolidated); before 2011 Samsung's early-month
 # guidance was filed as "영업(잠정)실적" (basis not stated in the title): both are first releases
 PRELIM = r"영업\(잠정\)실적"
@@ -101,19 +104,19 @@ def call(endpoint: str, params: dict, cache: Path, key: str, refresh: bool, bina
 
 def filings(firm: str, key: str, refresh: bool) -> pd.DataFrame:
     rows = []
-    for year in range(FIRST_YEAR, date.today().year + 1):
+    for year in range(FIRST_YEAR, LAST_YEAR + 1):
         page = 1
         while True:
-            # The current year is always re-asked: new filings arrive
             cache = RAW_DIR / f"list_{firm}_{year}_p{page}.json"
             payload = call("list.json", {"corp_code": FIRMS[firm], "bgn_de": f"{year}0101",
-                                         "end_de": f"{year}1231", "page_no": page, "page_count": 100},
-                           cache, key, refresh or year == date.today().year)
+                                         "end_de": min(f"{year}1231", SAMPLE_END), "page_no": page,
+                                         "page_count": 100}, cache, key, refresh)
             rows += payload.get("list", [])
             if page >= int(payload.get("total_page", 1)):
                 break
             page += 1
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    return df[df["rcept_dt"] <= SAMPLE_END]  # a cached list may hold later filings
 
 
 # ---------------------------------------------------------------- preliminary filings
@@ -212,11 +215,11 @@ def amount(row: dict, field: str) -> float | None:
 
 def final_table(firm: str, key: str, refresh: bool) -> pd.DataFrame:
     rows = []
-    for year in range(2015, date.today().year + 1):
+    for year in range(2015, LAST_YEAR + 1):
         acc = {}
         for code, qn in REPORTS.items():
             payload = call("fnlttSinglAcnt.json", {"corp_code": FIRMS[firm], "bsns_year": year, "reprt_code": code},
-                           RAW_DIR / f"acnt_{firm}_{year}_{code}.json", key, refresh or year >= date.today().year - 1)
+                           RAW_DIR / f"acnt_{firm}_{year}_{code}.json", key, refresh)
             for r in payload.get("list", []):
                 if r["fs_div"] == "CFS" and r["account_nm"] in ("매출액", "영업이익"):
                     name = "revenue" if r["account_nm"] == "매출액" else "op"

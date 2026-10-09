@@ -43,6 +43,15 @@ Sample decisions:
   project: downloaded 2026-09-30 21:21 UTC. Re-running `fetch_markets.py` later may give slightly
   different `Adj Close` values.
 
+## Fixed sample end (decision of 2026-10-09)
+
+All analyses use prices and release events up to **2026-09-30** and earnings up to **2026Q2**
+(`SAMPLE_END_DATE`, `SAMPLE_END_QUARTER` in `src/build_dataset.py`; `SAMPLE_END` in
+`src/fetch_earnings.py`). Later data are ignored even when downloaded (for instance Samsung's 2026Q3
+guidance filed on 2026-10-08, or the monthly export release of 2026-10-01), so that a re-run gives the
+results of the note. Cached OpenDART answers are treated as final (no automatic re-download of the
+current year); error answers of the API are never cached.
+
 ## Analysis datasets (built by `src/build_dataset.py`, 2026-10-04)
 
 No estimation, only assembly. All in `data/processed/` (regenerated, not committed).
