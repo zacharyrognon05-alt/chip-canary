@@ -35,3 +35,7 @@ paper/chip_canary_note.html
 
 # Private project notes (kept locally, not published)
 CLAUDE.md
+
+# Raw release calendar and customs press titles: not redistributable (see data/SOURCES.md)
+data/raw/calendar/
+data/raw/kcs/
