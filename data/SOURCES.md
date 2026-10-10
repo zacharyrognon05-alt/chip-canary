@@ -82,6 +82,24 @@ Construction rules:
 
 Manual download from https://ecos.bok.or.kr into `data/raw/ecos/`, read by `src/load_ecos.py`.
 
+**Source statement (format of the ECOS 통계정보이용지침):** 출처 : ECOS(한국은행, 수출금액지수), 2026.10.02.
+
+**Redistribution (checked 2026-10-10).** The raw CSV is committed to the repository, unmodified. The
+ECOS guidelines (통계정보이용지침, ECOS footer) state: "한국은행이 작성한 통계정보는 출처를 명시하는 한
+상업적 용도를 포함하여 무료로 자유롭게 사용, 가공 및 재배포할 수 있습니다" (statistics compiled by the
+Bank of Korea can be used, processed and redistributed free of charge, including commercially, if the
+source is stated); statistics compiled by other institutions can be used non-commercially with the
+source stated. The export value index is published by the Bank of Korea in its monthly release on
+export and import prices and trade indices (August 2026 figures released on 2026-09-15, the date of our
+file's update). The compiling institution was not read from the ECOS table information itself; to be
+confirmed in ECOS (통계표정보, field 출처). In either case this non-commercial use with the source stated
+is allowed.
+
+**Korea Customs Service files are not redistributed.** The KCS copyright policy
+(https://www.customs.go.kr/kcs/cm/cntnts/cntntsView.do?mi=7421&cntntsId=2610) requires prior
+consultation for documents without a KOGL (공공누리) mark; none of the press releases or of the 164
+attachments used carries one (checked 2026-10-10). The scripts download them.
+
 | Field | Value |
 |---|---|
 | Raw file | `data/raw/ecos/Export Value Indices_02183427.csv` (unmodified ECOS CSV export) |

@@ -54,10 +54,14 @@ python3 -m venv .venv
 cp .env.example .env    # then add your own keys: UN Comtrade and OpenDART (free, e-mail registration)
 ```
 
-**ECOS data, manual download.** The Bank of Korea's ECOS API requires identity verification with a
-Korean mobile number, so the chip export index is downloaded by hand from https://ecos.bok.or.kr: table
-3.3.1.1.1 Export Value Indices, item "Semi-conductors", monthly, CSV export. Save it as
-`data/raw/ecos/Export Value Indices_02183427.csv` (the file name expected by `src/load_ecos.py`).
+**ECOS data, included.** The Bank of Korea's ECOS API requires identity verification with a Korean
+mobile number, so the chip export index was downloaded by hand from https://ecos.bok.or.kr (table
+3.3.1.1.1 Export Value Indices, item "Semi-conductors", monthly, CSV export, downloaded 2026-10-02) and is
+included unmodified as `data/raw/ecos/Export Value Indices_02183427.csv`. Source, in the format required
+by the ECOS guidelines for use of statistical information: **출처 : ECOS(한국은행, 수출금액지수), 2026.10.02.** (Source: ECOS, Bank of Korea,
+Export Value Indices, 2 October 2026.) The ECOS guidelines allow statistics compiled by the Bank of
+Korea to be used, processed and redistributed with the source stated. Other raw downloads (customs
+releases, release calendar, prices, Comtrade, OpenDART) are not included: the scripts download them.
 
 Then run, in this order, from the repository root (`.venv/bin/python src/<script>.py`):
 
